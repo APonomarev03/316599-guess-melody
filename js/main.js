@@ -33,7 +33,9 @@ const showScreen = (screen) => {
 };
 
 const selectScreen = (index) => {
-  index = index < 0 ? screens.length - 1 : index;
+  if (index < 0) {
+    index = screens.length - 1;
+  }
   index = index >= screens.length ? 0 : index;
   currentIndex = index;
   showScreen(screens[currentIndex]);
