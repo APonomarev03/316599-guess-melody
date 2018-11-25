@@ -93,10 +93,8 @@ const toggleAnswersChecked = (items) => {
   });
   if (answersFiltered.length > 0) {
     gameButtonSubmit.disabled = false;
-    return 1;
   }
   gameButtonSubmit.disabled = true;
-  return 0;
 };
 
 tracks.addEventListener(`change`, () => {
