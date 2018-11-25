@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Alexey Ponomarev](https://up.htmlacademy.ru/ecmascript/7/user/316599).
-* Наставник: [Александр Быков](https://htmlacademy.ru/profile/id7107).
+* Наставник: [Vsevolod Artemyev](https://github.com/vartemiev).
 
 ---
 

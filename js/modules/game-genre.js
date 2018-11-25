@@ -85,8 +85,9 @@ const tracks = element.querySelector(`.game__tracks`);
 const gameButtonSubmit = element.querySelector(`.game__submit`);
 const answers = element.querySelectorAll(`.game__answer input`);
 const gameBack = element.querySelector(`.game__back`);
+gameButtonSubmit.disabled = false;
 
-const isAnswersChecked = (items) => {
+const toggleAnswersChecked = (items) => {
   const answersFiltered = Array.from(items).filter((item) => {
     return item.checked;
   });
@@ -95,13 +96,11 @@ const isAnswersChecked = (items) => {
     return 1;
   }
   gameButtonSubmit.disabled = true;
-  return answersFiltered;
+  return 0;
 };
 
-isAnswersChecked(answers);
-
 tracks.addEventListener(`change`, () => {
-  isAnswersChecked(answers);
+  toggleAnswersChecked(answers);
 });
 
 gameButtonSubmit.addEventListener(`click`, () => {
