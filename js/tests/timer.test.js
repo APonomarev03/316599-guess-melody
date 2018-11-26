@@ -2,7 +2,7 @@ import {assert} from "chai";
 import {createTimer} from "../modules/timer";
 
 describe(`Check timer changer`, () => {
-  it(`should tickCallback timer and getter time`, () => {
+  it(`should call tickCallback three times`, () => {
     let tickCalls = 0;
     const timer = createTimer(10, () => tickCalls++, () => () => {});
     timer.tick();
@@ -11,7 +11,7 @@ describe(`Check timer changer`, () => {
     assert.equal(timer.time, 7);
     assert.equal(tickCalls, 3);
   });
-  it(`should endCallback timer and getter time`, () => {
+  it(`should call endCallback`, () => {
     let endCalls = 0;
     const timer = createTimer(3, () => {}, () => endCalls++);
     timer.tick();

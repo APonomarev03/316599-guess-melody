@@ -10,6 +10,5 @@ export const INITIAL_STATE = Object.freeze({
     slow: 0,
     fast: 0,
   },
-  time: 300,
-  mistakes: 0
+  time: 300
 });

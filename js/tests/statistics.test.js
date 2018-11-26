@@ -2,18 +2,17 @@ import {assert} from "chai";
 import {countScorePlayer, showingPlayerResult, changeLevel, playerLivesManagement} from "../modules/statistics";
 
 describe(`player scoring`, () => {
-  it(`Player answered less than 10 questions or end time`, () => {
+  it(`should exceed the time limit`, () => {
     assert.equal(countScorePlayer([
-      {currentAnswer: true, time: 30},
-      {currentAnswer: true, time: 60},
-      {currentAnswer: true, time: 10},
-      {currentAnswer: false, time: 5},
-      {currentAnswer: false, time: 120},
-      {currentAnswer: false, time: 120},
       {currentAnswer: false, time: 30},
-      {currentAnswer: true, time: 60},
-      {currentAnswer: true, time: 30},
-      {currentAnswer: true, time: 60},
+      {currentAnswer: false, time: 30},
+      {currentAnswer: false, time: 30},
+      {currentAnswer: false, time: 30},
+    ]), -1);
+  });
+  it(`should make three mistakes`, () => {
+    assert.equal(countScorePlayer([
+      {currentAnswer: true, time: 310},
     ]), -1);
   });
   it(`All answers are correct and are currect time`, () => {
