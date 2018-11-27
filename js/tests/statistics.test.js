@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {countScorePlayer, showingPlayerResult, changeLevel, playerLivesManagement} from "../modules/statistics";
+import {countScorePlayer, showPlayerResult, changeLevel, managePlayerLives} from "../modules/statistics";
 
 describe(`player scoring`, () => {
   it(`should exceed the time limit`, () => {
@@ -15,7 +15,7 @@ describe(`player scoring`, () => {
       {currentAnswer: true, time: 310},
     ]), -1);
   });
-  it(`All answers are correct and are currect time`, () => {
+  it(`all answers are correct and are currect time`, () => {
     assert.equal(countScorePlayer([
       {currentAnswer: true, time: 30},
       {currentAnswer: true, time: 30},
@@ -31,28 +31,28 @@ describe(`player scoring`, () => {
   });
 });
 
-describe(`Showing player results`, () => {
-  it(`Should playersStatistics not allow set non Array value`, () => {
-    assert.throws(() => showingPlayerResult(1, {}), /PlayersStatistics should be of type Array/);
-    assert.throws(() => showingPlayerResult(`string`, {}), /PlayersStatistics should be of type Array/);
-    assert.throws(() => showingPlayerResult(undefined, {}), /PlayersStatistics should be of type Array/);
+describe(`show player results`, () => {
+  it(`should playersStatistics not allow set non Array value`, () => {
+    assert.throws(() => showPlayerResult(1, {}), /PlayersStatistics should be of type Array/);
+    assert.throws(() => showPlayerResult(`string`, {}), /PlayersStatistics should be of type Array/);
+    assert.throws(() => showPlayerResult(undefined, {}), /PlayersStatistics should be of type Array/);
   });
   it(`player won`, () => {
-    assert.equal(showingPlayerResult([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], {
+    assert.equal(showPlayerResult([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], {
       notes: 3,
       time: 60,
       scores: 10
     }), `Вы заняли 1 место из 10 игроков. Это лучше, чем у 90% игроков`);
   });
   it(`player lost - run out of time`, () => {
-    assert.equal(showingPlayerResult([], {
+    assert.equal(showPlayerResult([], {
       notes: 3,
       time: 0,
       scores: 8
     }), `Время вышло! Вы не успели отгадать все мелодии`);
   });
   it(`player lost - ran out of effort`, () => {
-    assert.equal(showingPlayerResult([], {
+    assert.equal(showPlayerResult([], {
       notes: 0,
       time: 30,
       scores: 5
@@ -60,20 +60,20 @@ describe(`Showing player results`, () => {
   });
 });
 
-describe(`Player lives management`, () => {
+describe(`manage player lives`, () => {
   it(`update lives count`, () => {
-    assert.equal(playerLivesManagement(1), 2);
-    assert.equal(playerLivesManagement(2), 1);
-    assert.equal(playerLivesManagement(3), 0);
+    assert.equal(managePlayerLives(1), 2);
+    assert.equal(managePlayerLives(2), 1);
+    assert.equal(managePlayerLives(3), 0);
   });
   it(`should not allow set non number value`, () => {
-    assert.throws(() => playerLivesManagement([]), /mistakes should be of type number/);
-    assert.throws(() => playerLivesManagement({}), /mistakes should be of type number/);
-    assert.throws(() => playerLivesManagement(undefined), /mistakes should be of type number/);
+    assert.throws(() => managePlayerLives([]), /mistakes should be of type number/);
+    assert.throws(() => managePlayerLives({}), /mistakes should be of type number/);
+    assert.throws(() => managePlayerLives(undefined), /mistakes should be of type number/);
   });
 });
 
-describe(`Check level changer`, () => {
+describe(`check level changer`, () => {
   it(`should update level of the game`, () => {
     assert.equal(changeLevel(1), 2);
     assert.equal(changeLevel(5), 6);

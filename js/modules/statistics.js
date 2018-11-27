@@ -1,9 +1,9 @@
-import {gameMagicConstants} from "../modules/magic-constants";
+import {gameConstants} from "../modules/magic-constants";
 import {INITIAL_STATE} from "./game-state";
 
 export const countScorePlayer = (answers) => {
-  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= gameMagicConstants.FAST_ANSWER).length;
-  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < gameMagicConstants.FAST_ANSWER).length;
+  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= gameConstants.FAST_ANSWER).length;
+  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < gameConstants.FAST_ANSWER).length;
   const mistakesCount = answers.filter((answer) => answer.currentAnswer === false).length;
   let totalTime = 0;
   answers.forEach((answer) => {
@@ -15,7 +15,7 @@ export const countScorePlayer = (answers) => {
   return slowCount + fastCount * 2 - mistakesCount * 2;
 };
 
-export const showingPlayerResult = (statistics, results) => {
+export const showPlayerResult = (statistics, results) => {
   if (!Array.isArray(statistics)) {
     throw new Error(`PlayersStatistics should be of type Array`);
   }
@@ -34,7 +34,7 @@ export const showingPlayerResult = (statistics, results) => {
   return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${successPercent}% игроков`;
 };
 
-export const playerLivesManagement = (mistakes) => {
+export const managePlayerLives = (mistakes) => {
   if (typeof mistakes !== `number`) {
     throw new Error(`mistakes should be of type number`);
   }
@@ -50,7 +50,7 @@ export const changeLevel = (level) => {
   if (level < 0) {
     throw new Error(`level cannot be less than zero`);
   }
-  if (level > gameMagicConstants.MAX_GAME_LEVEL) {
+  if (level > gameConstants.MAX_GAME_LEVEL) {
     throw new Error(`the level can not be more than ten`);
   }
   return ++level;
