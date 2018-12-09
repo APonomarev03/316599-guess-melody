@@ -1,7 +1,8 @@
-import {renderScreen, changeScreen, changeLevel, checkQuestionTypeArtist} from "../util";
+import {renderScreen, changeScreen, checkQuestionTypeArtist} from "../util";
 import gameGenreScreen from "./game-genre";
 import gameArtistScreen from "./game-artist";
-import {QUESTIONS} from "../data/game";
+import {QUESTIONS, INITIAL_STATE} from "../data/game";
+import {footerTemplate} from "../templates/footer-template";
 
 export default (state) => {
   const template = `
@@ -17,10 +18,11 @@ export default (state) => {
     <p class="welcome__text">Удачи!</p>
   </section>`;
   const element = renderScreen(template);
+  element.appendChild(footerTemplate());
   const welcomeButton = element.querySelector(`.welcome__button`);
 
   welcomeButton.addEventListener(`click`, () => {
-    const game = changeLevel(state, 1);
+    const game = Object.assign({}, INITIAL_STATE, {level: 1});
     if (checkQuestionTypeArtist(QUESTIONS[`screen-${game.level}`].type)) {
       changeScreen(gameArtistScreen(game, QUESTIONS[`screen-${game.level}`]));
     } else {

@@ -2,10 +2,7 @@ export const INITIAL_STATE = {
   level: 0,
   notes: 3,
   scores: 0,
-  answers: {
-    slow: 0,
-    fast: 0,
-  },
+  answers: [],
   time: {
     minutes: 4,
     seconds: 59
@@ -13,8 +10,6 @@ export const INITIAL_STATE = {
 };
 
 export const PLAYERS_STATISTICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-export let PLAYER_ANSWERS = [];
 
 export const QUESTIONS = {
   'screen-1': {
@@ -389,5 +384,3 @@ export const QUESTIONS = {
     ],
   }
 };
-
-export const playerAnswers = [];

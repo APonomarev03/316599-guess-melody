@@ -33,7 +33,22 @@ export const showPlayerResult = (statistics, results) => {
   return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${successPercent}% игроков`;
 };
 
-export const managePlayerLives = (game) => {
-  const notes = game.notes - 1;
-  return Object.assign({}, game, {notes});
+export const managePlayerLives = (notes) => {
+  if (typeof notes !== `number`) {
+    throw new Error(`mistakes should be of type number`);
+  }
+  return notes - 1;
+};
+
+export const changeLevel = (level) => {
+  if (typeof level !== `number`) {
+    throw new Error(`level should be of type number`);
+  }
+  if (level < 0) {
+    throw new Error(`level cannot be less than zero`);
+  }
+  if (level > gameConstants.MAX_GAME_LEVEL) {
+    throw new Error(`the level can not be more than ten`);
+  }
+  return level + 1;
 };

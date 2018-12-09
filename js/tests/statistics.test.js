@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {countScorePlayer, showPlayerResult, changeLevel, managePlayerLives} from "../modules/statistics";
+import {countScorePlayer, showPlayerResult, managePlayerLives, changeLevel} from "../modules/statistics";
 
 describe(`player scoring`, () => {
   it(`should exceed the time limit`, () => {
@@ -62,9 +62,9 @@ describe(`show player results`, () => {
 
 describe(`manage player lives`, () => {
   it(`update lives count`, () => {
-    assert.equal(managePlayerLives(1), 2);
     assert.equal(managePlayerLives(2), 1);
-    assert.equal(managePlayerLives(3), 0);
+    assert.equal(managePlayerLives(3), 2);
+    assert.equal(managePlayerLives(1), 0);
   });
   it(`should not allow set non number value`, () => {
     assert.throws(() => managePlayerLives([]), /mistakes should be of type number/);

@@ -1,8 +1,8 @@
-import {changeLevel, changeScreen, checkQuestionTypeArtist, renderScreen} from '../util';
-import {getArtists} from '../templates/artists';
+import {changeScreen, checkQuestionTypeArtist, renderScreen} from '../util';
 import {headerTemplate} from "../templates/header-template";
-import {PLAYER_ANSWERS, PLAYERS_RESULTS, PLAYERS_STATISTICS, QUESTIONS} from "../data/game";
-import {countScorePlayer, managePlayerLives, showPlayerResult} from "../statistics";
+import {footerTemplate} from "../templates/footer-template";
+import {PLAYERS_STATISTICS, QUESTIONS} from "../data/game";
+import {countScorePlayer, managePlayerLives, showPlayerResult, changeLevel} from "../statistics";
 import gameArtistScreen from "./game-artist";
 import gameGenreScreen from "./game-genre";
 import successResultScreen from "./result-success";
@@ -15,16 +15,21 @@ export default (state, game) => {
       <div class="game__track">
         <button class="track__button track__button--play" type="button"></button>
         <audio src="${game.answers[0].src}"></audio>
-      </div>
-      <form class="game__artist"></form>
+      <form class="game__artist">
+        ${[...game.answers].map((answer) => `<div class="artist">
+            <input class="artist__input visually-hidden" value="${answer.artist}" type="radio" name="answer">
+            <label class="artist__block" for="answer-1">
+              <img class="artist__picture" src="${answer.image}" alt="${answer.artist}">
+              <span class="artist__name">${answer.artist}</span>
+            </label>
+        </div>`)}
+      </form>
     </section>
 </section>`;
 
   const element = renderScreen(template);
   element.prepend(headerTemplate(state));
-  const artists = getArtists(game.answers);
-  const artistsForm = element.querySelector(`.game__artist`);
-  artistsForm.appendChild(artists);
+  element.appendChild(footerTemplate());
   const answerWrapper = element.querySelector(`.game__artist`);
   const tracksButtons = element.querySelectorAll(`.track__button`);
 
@@ -49,27 +54,26 @@ export default (state, game) => {
     const wrapper = clickedElement.closest(`.artist`);
     const inputElement = wrapper.querySelector(`input`);
     const correctAnswer = game.answers.find((answer) => answer.isCorrect);
-    let answers = Object.assign([], PLAYER_ANSWERS);
 
     if (inputElement.value === correctAnswer.artist) {
-      answers.push({currentAnswer: true, time: 30});
+      state.answers.push({currentAnswer: true, time: 30});
     } else {
-      answers.push({currentAnswer: false, time: 30});
-      state = managePlayerLives(state);
+      state.answers.push({currentAnswer: false, time: 30});
+      state.notes = managePlayerLives(state.notes);
     }
 
-    if (state.level === 10 || state.notes === 0) {
-      state.scores = countScorePlayer(answers);
+    if (state.level === 10 || state.notes < 0) {
+      state.scores = countScorePlayer(state.answers);
       const results = showPlayerResult(PLAYERS_STATISTICS, state);
       changeScreen(successResultScreen(state, results));
     }
 
     if (state.notes > 0) {
-      const newGame = changeLevel(state, state.level + 1);
-      if (checkQuestionTypeArtist(QUESTIONS[`screen-${newGame.level}`].type)) {
-        changeScreen(gameArtistScreen(newGame, QUESTIONS[`screen-${newGame.level}`]));
+      state.level = changeLevel(state.level);
+      if (checkQuestionTypeArtist(QUESTIONS[`screen-${state.level}`].type)) {
+        changeScreen(gameArtistScreen(state, QUESTIONS[`screen-${state.level}`]));
       } else {
-        changeScreen(gameGenreScreen(newGame, QUESTIONS[`screen-${newGame.level}`]));
+        changeScreen(gameGenreScreen(state, QUESTIONS[`screen-${state.level}`]));
       }
     }
   });

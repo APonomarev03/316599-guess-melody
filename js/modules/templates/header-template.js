@@ -1,5 +1,6 @@
 import {changeScreen} from "../util";
-import WelcomeScreen from "../screens/welcome";
+import {INITIAL_STATE, QUESTIONS} from "../data/game";
+import gameArtistScreen from "../screens/game-artist";
 
 export const headerTemplate = (state) => {
   const template = `
@@ -28,7 +29,10 @@ export const headerTemplate = (state) => {
   const gameBack = element.content.querySelector(`.game__back`);
   gameBack.addEventListener(`click`, (evt) => {
     evt.preventDefault();
-    changeScreen(WelcomeScreen);
+    const newGame = Object.assign({}, INITIAL_STATE, {
+      level: 1
+    });
+    changeScreen(gameArtistScreen(newGame, QUESTIONS[`screen-${newGame.level}`]));
   });
 
   return element.content;

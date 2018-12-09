@@ -1,6 +1,7 @@
 import {renderScreen, changeScreen} from '../util';
 import {INITIAL_STATE, QUESTIONS} from "../data/game";
 import gameArtistScreen from "./game-artist";
+import {footerTemplate} from "../templates/footer-template";
 
 export default (state, result) => {
   const template = `
@@ -13,6 +14,7 @@ export default (state, result) => {
   </section>`;
 
   const element = renderScreen(template);
+  element.appendChild(footerTemplate());
   const resultReplay = element.querySelector(`.result__replay`);
 
   resultReplay.addEventListener(`click`, () => {
