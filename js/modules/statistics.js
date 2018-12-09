@@ -1,5 +1,4 @@
 import {gameConstants} from "../modules/magic-constants";
-import {INITIAL_STATE} from "./game-state";
 
 export const countScorePlayer = (answers) => {
   const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= gameConstants.FAST_ANSWER).length;
@@ -34,13 +33,11 @@ export const showPlayerResult = (statistics, results) => {
   return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${successPercent}% игроков`;
 };
 
-export const managePlayerLives = (mistakes) => {
-  if (typeof mistakes !== `number`) {
+export const managePlayerLives = (notes) => {
+  if (typeof notes !== `number`) {
     throw new Error(`mistakes should be of type number`);
   }
-  const newGameState = Object.assign({}, INITIAL_STATE);
-  newGameState.notes -= mistakes;
-  return newGameState.notes;
+  return notes - 1;
 };
 
 export const changeLevel = (level) => {
@@ -53,5 +50,5 @@ export const changeLevel = (level) => {
   if (level > gameConstants.MAX_GAME_LEVEL) {
     throw new Error(`the level can not be more than ten`);
   }
-  return ++level;
+  return level + 1;
 };
