@@ -1,4 +1,4 @@
-export const INITIAL_STATE = {
+export const INITIAL_STATE = Object.freeze({
   level: 0,
   notes: 3,
   scores: 0,
@@ -7,7 +7,7 @@ export const INITIAL_STATE = {
     minutes: 4,
     seconds: 59
   }
-};
+});
 
 export const PLAYERS_STATISTICS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 

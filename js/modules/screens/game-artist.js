@@ -16,7 +16,7 @@ export default (state, game) => {
         <button class="track__button track__button--play" type="button"></button>
         <audio src="${game.answers[0].src}"></audio>
       <form class="game__artist">
-        ${[...game.answers].map((answer) => `<div class="artist">
+        ${game.answers.map((answer) => `<div class="artist">
             <input class="artist__input visually-hidden" value="${answer.artist}" type="radio" name="answer">
             <label class="artist__block" for="answer-1">
               <img class="artist__picture" src="${answer.image}" alt="${answer.artist}">
@@ -68,7 +68,7 @@ export default (state, game) => {
       changeScreen(successResultScreen(state, results));
     }
 
-    if (state.notes > 0) {
+    if (state.notes >= 0) {
       state.level = changeLevel(state.level);
       if (checkQuestionTypeArtist(QUESTIONS[`screen-${state.level}`].type)) {
         changeScreen(gameArtistScreen(state, QUESTIONS[`screen-${state.level}`]));

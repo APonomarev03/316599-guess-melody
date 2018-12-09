@@ -13,7 +13,7 @@ export default (state, game) => {
       <section class="game__screen">
         <h2 class="game__title">${game.text}</h2>
         <form class="game__tracks">
-          ${[...game.answers].map((answer, idx) => `<div class="track">
+          ${game.answers.map((answer, idx) => `<div class="track">
               <button class="track__button track__button--play" type="button"></button>
               <div class="track__status">
                 <audio src="${answer.src}"></audio>
@@ -32,7 +32,7 @@ export default (state, game) => {
   element.prepend(headerTemplate(state));
   element.appendChild(footerTemplate());
   const form = element.querySelector(`.game__tracks`);
-  const tracksButtons = element.querySelectorAll(`.track__button`);
+  const trackButton = element.querySelector(`.track__button`);
   const gameButtonSubmit = element.querySelector(`.game__submit`);
   const answers = element.querySelectorAll(`.game__answer input`);
   gameButtonSubmit.disabled = true;
@@ -49,9 +49,7 @@ export default (state, game) => {
     }
   };
 
-  tracksButtons.forEach((btn) => {
-    btn.addEventListener(`click`, trackButtonsClickHandler);
-  });
+  trackButton.addEventListener(`click`, trackButtonsClickHandler);
 
   const toggleAnswersChecked = (items) => {
     const answersFiltered = Array.from(items).filter((item) => {
@@ -90,7 +88,7 @@ export default (state, game) => {
       changeScreen(successResultScreen(state, results));
     }
 
-    if (state.notes > 0 && state.level <= 10) {
+    if (state.notes >= 0) {
       state.level = changeLevel(state.level);
       if (checkQuestionTypeArtist(QUESTIONS[`screen-${state.level}`].type)) {
         changeScreen(gameArtistScreen(state, QUESTIONS[`screen-${state.level}`]));
