@@ -18,13 +18,13 @@
 
 .welcome__logo {
   margin: 0;
-  margin-top: 70px;
+  margin-top: 190px;
 }
 
 .welcome__button {
   position: absolute;
   left: 350px;
-  top: 420px;
+  top: 315px;
 
   padding: 0;
 
@@ -48,7 +48,7 @@
 .welcome__rules-title {
   @include italic-title;
 
-  margin-top: 300px;
+  margin-top: 200px;
 }
 
 .welcome__text {

@@ -16,9 +16,7 @@
 // Шапка игровых экранов
 .game__header {
   display: flex;
-
-  margin-bottom: 60px;
-  margin-top: -145px;
+  margin-top: 165px;
   width: 100%;
 }
 
@@ -67,7 +65,7 @@
 .game__screen {
   position: relative;
   z-index: 1;
-  top: 45px;
+  top: 11%;
 
   width: 440px;
   text-align: center;
