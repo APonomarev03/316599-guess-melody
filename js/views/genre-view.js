@@ -14,8 +14,8 @@ export default class GenreView extends AbstractView {
             <h2 class="game__title">${this.question.text}</h2>
             <form class="game__tracks">
               ${this.question.answers.map((answer, idx) => `<div class="track">
-                  <button class="track__button track__button--play" type="button"></button>
                   <div class="track__status">
+                    <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
                   <div class="game__answer">
@@ -28,12 +28,6 @@ export default class GenreView extends AbstractView {
           </section>
         </section>
       </section>`;
-  }
-
-  render() {
-    const element = document.createElement(`template`);
-    element.innerHTML = this.template;
-    return element.content;
   }
 
   onButtonClick() {}
@@ -52,14 +46,5 @@ export default class GenreView extends AbstractView {
 
     form.addEventListener(`change`, () => this.onAnswersChecked(answers, gameButtonSubmit));
     form.addEventListener(`submit`, (evt) => this.onSubmit(evt));
-  }
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
   }
 }

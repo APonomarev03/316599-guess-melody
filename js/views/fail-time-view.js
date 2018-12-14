@@ -14,25 +14,11 @@ export default class FailTimeView extends AbstractView {
           <button class="result__replay" type="button">Попробовать ещё раз</button>
       </section>`;
   }
-  render() {
-    const element = document.createElement(`span`);
-    element.innerHTML = this.template;
-    return element;
-  }
 
   onReplay() {}
 
   bind() {
     const resultReplay = this.element.querySelector(`.result__replay`);
     resultReplay.addEventListener(`click`, (evt) => this.onReplay(evt.target));
-  }
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
   }
 }

@@ -21,25 +21,10 @@ export default class WelcomeView extends AbstractView {
     </section>`;
   }
 
-  render() {
-    const element = document.createElement(`template`);
-    element.innerHTML = this.template;
-    return element.content;
-  }
-
   onClick() {}
 
   bind() {
     const btn = this.element.querySelector(`.welcome__button`);
     btn.addEventListener(`click`, () => this.onClick(`click`));
-  }
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
   }
 }

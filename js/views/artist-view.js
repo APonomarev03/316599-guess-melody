@@ -28,11 +28,6 @@ export default class ArtistView extends AbstractView {
         </section>
       </section>`;
   }
-  render() {
-    const element = document.createElement(`template`);
-    element.innerHTML = this.template;
-    return element.content;
-  }
 
   onButtonClick() {}
   onAnswer() {}
@@ -42,13 +37,5 @@ export default class ArtistView extends AbstractView {
     const trackButtons = this.element.querySelector(`.track__button`);
     trackButtons.addEventListener(`click`, (evt) => this.onButtonClick(evt));
     answerWrapper.addEventListener(`click`, (evt) => this.onAnswer(evt));
-  }
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
   }
 }

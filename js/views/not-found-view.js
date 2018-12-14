@@ -12,20 +12,6 @@ export default class NotFoundView extends AbstractView {
         <p class="modal__text">Статус: 404. Пожалуйста, перезагрузите страницу.</p>
       </section>`;
   }
-  render() {
-    const element = document.createElement(`span`);
-    element.innerHTML = this.template;
-    return element;
-  }
 
   bind() {}
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
-  }
 }

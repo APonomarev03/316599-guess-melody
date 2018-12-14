@@ -28,8 +28,9 @@
 }
 
 .track__status {
-  width: 330px;
+  width: 325px;
   height: 55px;
+  margin-left: 50px;
 
   background-image: url("../img/player-background.png");
   background-repeat: no-repeat;
@@ -37,6 +38,16 @@
 
   animation: fadein 1000ms ease-out;
   animation-iteration-count: 1;
+
+  .track__button--play {
+    position: absolute;
+    left: 0;
+  }
+
+  .track__button {
+    position: absolute;
+    left: 0;
+  }
 }
 
 @keyframes fadein {

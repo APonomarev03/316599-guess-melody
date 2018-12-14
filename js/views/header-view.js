@@ -38,12 +38,6 @@ export default class HeaderView extends AbstractView {
        </header>`;
   }
 
-  render() {
-    const element = document.createElement(`span`);
-    element.innerHTML = this.template;
-    return element;
-  }
-
   onClick() {}
 
   bind() {
@@ -54,14 +48,5 @@ export default class HeaderView extends AbstractView {
         this.onClick(`header btn click`);
       });
     }
-  }
-
-  get element() {
-    if (this._element) {
-      return this._element;
-    }
-    this._element = this.render();
-    this.bind();
-    return this._element;
   }
 }
