@@ -52,9 +52,9 @@ export const createGameLevelArtist = (question, state) => {
     const successAnswer = question.answers.find((answer) => answer.isCorrect);
 
     if (inputElement.value === successAnswer.artist) {
-      state.answers.push({currentAnswer: true, time: 30});
+      state.answers = [...state.answers, {currentAnswer: true, time: 30}];
     } else {
-      state.answers.push({currentAnswer: false, time: 30});
+      state.answers = [...state.answers, {currentAnswer: false, time: 30}];
       state.notes = managePlayerLives(state.notes);
     }
     checkResultsGame(state);
@@ -84,33 +84,18 @@ export const createGameLevelGenre = (question, state) => {
     const form = evt.target;
     const playerAnswers = Array.from(form.querySelectorAll(`input[type=checkbox]`));
     const correctAnswers = QUESTIONS[`screen-${state.level}`].answers.filter((answer) => answer);
-    const playersAnswersFiltered = [];
-    const correctAnswersFiltered = [];
-
-    playerAnswers.forEach((answer) => {
-      if (answer.checked) {
-        playersAnswersFiltered.push(true);
-      } else {
-        playersAnswersFiltered.push(false);
-      }
-    });
-
-    correctAnswers.forEach((answer) => {
-      if (answer.isCorrect) {
-        correctAnswersFiltered.push(true);
-      } else {
-        correctAnswersFiltered.push(false);
-      }
-    });
-
+    const playersAnswersFiltered = playerAnswers.map((answer) => !!answer.checked);
+    const correctAnswersFiltered = correctAnswers.map((answer) => !!answer.isCorrect);
     const isCorrectAnswer = playersAnswersFiltered.join() === correctAnswersFiltered.join();
 
     if (!isCorrectAnswer) {
-      state.answers.push({currentAnswer: false, time: 30});
+      state.answers = [...state.answers, {currentAnswer: false, time: 30}];
       state.notes = managePlayerLives(state.notes);
     } else {
-      state.answers.push({currentAnswer: true, time: 30});
+      state.answers = [...state.answers, {currentAnswer: true, time: 30}];
     }
+
+    console.log(state.answers);
 
     checkResultsGame(state);
   };
@@ -156,7 +141,6 @@ export const toggleAudio = (evt) => {
     audioElement.play();
     activeTrack = audioElement;
     trackBtn.classList.remove(`track__button--play`);
-    activeTrack = audioElement;
   } else {
     activeTrack = undefined;
     audioElement.pause();
