@@ -50,7 +50,7 @@ export const QUESTIONS = {
     type: `genre`,
     answers: [
       {
-        isCorrect: false,
+        isCorrect: true,
         time: 35,
         artist: `Kevin MacLeod`,
         name: `Long Stroll`,
@@ -68,7 +68,7 @@ export const QUESTIONS = {
         genre: `Rock`
       },
       {
-        isCorrect: false,
+        isCorrect: true,
         time: 35,
         artist: `Audionautix`,
         name: `Travel Light`,
