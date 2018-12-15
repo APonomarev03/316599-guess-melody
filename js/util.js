@@ -15,13 +15,25 @@ export const checkQuestionTypeArtist = (questionType) => {
   return questionType === `artist`;
 };
 
+export const renderWelcomeScreen = () => {
+  let state = Object.assign({}, INITIAL_STATE);
+  const header = new HeaderView(state);
+  const footer = new FooterView();
+  const welcome = createGameLevelWelcome();
+
+  appElement.innerHTML = ``;
+  appElement.appendChild(header.element);
+  appElement.appendChild(welcome);
+  appElement.appendChild(footer.element);
+};
+
 export const renderStartGame = () => {
   let state = Object.assign({}, INITIAL_STATE, {level: 1});
   let question = QUESTIONS[`screen-${state.level}`];
   const genreLevel = createGameLevelArtist(question, state);
   appElement.innerHTML = ``;
   updateHeader(state);
-  updateLevel(genreLevel);
+  appElement.appendChild(genreLevel);
   updateFooter();
 };
 
@@ -63,26 +75,43 @@ export const createGameLevelGenre = (question, state) => {
       return answer.checked;
     });
 
-    if (answersFiltered.length > 0) {
-      btnSubmit.disabled = false;
-    } else {
-      btnSubmit.disabled = true;
-    }
+    btnSubmit.disabled = answersFiltered.length <= 0;
   };
 
-  genre.onSubmit = (props) => {
-    props.preventDefault();
-    props.stopPropagation();
-    const form = props.target;
-    const playerAnswers = Array.from(form.querySelectorAll(`input[type=checkbox]:checked`));
-    const correctAnswer = QUESTIONS[`screen-${state.level}`].answers.find((answer) => answer.isCorrect);
+  genre.onSubmit = (evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+    const form = evt.target;
+    const playerAnswers = Array.from(form.querySelectorAll(`input[type=checkbox]`));
+    const correctAnswers = QUESTIONS[`screen-${state.level}`].answers.filter((answer) => answer);
+    const playersAnswersFiltered = [];
+    const correctAnswersFiltered = [];
 
-    if (playerAnswers.find((answer) => answer.value !== correctAnswer.name)) {
+    playerAnswers.forEach((answer) => {
+      if (answer.checked) {
+        playersAnswersFiltered.push(true);
+      } else {
+        playersAnswersFiltered.push(false);
+      }
+    });
+
+    correctAnswers.forEach((answer) => {
+      if (answer.isCorrect) {
+        correctAnswersFiltered.push(true);
+      } else {
+        correctAnswersFiltered.push(false);
+      }
+    });
+
+    const isCorrectAnswer = playersAnswersFiltered.join() === correctAnswersFiltered.join();
+
+    if (!isCorrectAnswer) {
       state.answers.push({currentAnswer: false, time: 30});
       state.notes = managePlayerLives(state.notes);
     } else {
       state.answers.push({currentAnswer: true, time: 30});
     }
+
     checkResultsGame(state);
   };
   return genre.element;
@@ -100,12 +129,8 @@ export const updateHeader = (state) => {
   let headerView = new HeaderView(state);
   appElement.appendChild(headerView.element);
   headerView.onClick = () => {
-    renderStartGame();
+    renderWelcomeScreen();
   };
-};
-
-export const updateLevel = (level) => {
-  appElement.appendChild(level);
 };
 
 export const updateFooter = () => {
@@ -113,26 +138,27 @@ export const updateFooter = () => {
   appElement.appendChild(footerView.element);
 };
 
+let activeTrack;
+
+const pauseActiveTrack = (audio) => {
+  if (audio) {
+    audio.pause();
+    audio.parentElement.querySelector(`.track__button`).classList.add(`track__button--play`);
+  }
+};
+
 export const toggleAudio = (evt) => {
   const trackBtn = evt.target;
   const audioElement = trackBtn.parentElement.querySelector(`audio`);
 
-  if (trackBtn.parentElement.classList.contains(`track__status`)) {
-    const tracks = document.querySelectorAll(`.track__status`);
-    tracks.forEach((track) => {
-      const currentTrackBtn = track.querySelector(`.track__button`);
-      const currentAudio = track.querySelector(`audio`);
-      if (track.querySelector(`.track__button`) !== trackBtn) {
-        currentAudio.pause();
-        currentTrackBtn.classList.add(`track__button--play`);
-      }
-    });
-  }
-
   if (trackBtn.classList.contains(`track__button--play`)) {
+    pauseActiveTrack(activeTrack);
     audioElement.play();
+    activeTrack = audioElement;
     trackBtn.classList.remove(`track__button--play`);
+    activeTrack = audioElement;
   } else {
+    activeTrack = undefined;
     audioElement.pause();
     trackBtn.classList.add(`track__button--play`);
   }
@@ -146,7 +172,7 @@ export const checkResultsGame = (state) => {
     const results = showPlayerResult(statistics, state);
     const resultSuccessView = new ResultSuccessView(state, results);
     appElement.innerHTML = ``;
-    updateLevel(resultSuccessView.element);
+    appElement.appendChild(resultSuccessView.element);
     updateFooter();
 
     resultSuccessView.onReplay = () => {
@@ -156,7 +182,7 @@ export const checkResultsGame = (state) => {
   } else if (state.notes === gameConstants.GAME_DIE) {
     appElement.innerHTML = ``;
     const failTriesView = new FailTriesView();
-    updateLevel(failTriesView.element);
+    appElement.appendChild(failTriesView.element);
     updateFooter();
 
     failTriesView.onReplay = () => {
