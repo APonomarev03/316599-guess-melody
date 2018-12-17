@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {gameConstants} from '../constants';
 
 export default class GenreView extends AbstractView {
   constructor(question) {
@@ -18,7 +19,7 @@ export default class GenreView extends AbstractView {
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div class="game__answer">
+                  <div ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>

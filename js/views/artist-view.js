@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {gameConstants} from '../constants';
 
 export default class ArtistView extends AbstractView {
   constructor(question) {
@@ -19,7 +20,7 @@ export default class ArtistView extends AbstractView {
               ${this.question.answers.map((answer) => `<div class="artist">
                   <input class="artist__input visually-hidden" value="${answer.artist}" type="radio" name="answer">
                   <label class="artist__block" for="answer-1">
-                    <img class="artist__picture" src="${answer.image}" alt="${answer.artist}">
+                    <img ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image}" alt="${answer.artist}">
                     <span class="artist__name">${answer.artist}</span>
                   </label>
               </div>`)}
