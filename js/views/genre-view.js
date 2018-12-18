@@ -32,8 +32,7 @@ export default class GenreView extends AbstractView {
   }
 
   onButtonClick() {}
-  onAnswersChecked() {}
-  onSubmit() {}
+  onAnswer() {}
 
   bind() {
     const form = this.element.querySelector(`.game__tracks`);
@@ -45,7 +44,12 @@ export default class GenreView extends AbstractView {
       button.addEventListener(`click`, (evt) => this.onButtonClick(evt));
     });
 
-    form.addEventListener(`change`, () => this.onAnswersChecked(answers, gameButtonSubmit));
-    form.addEventListener(`submit`, (evt) => this.onSubmit(evt));
+    form.addEventListener(`change`, () => {
+      const answersFiltered = Array.from(answers).filter((answer) => {
+        return answer.checked;
+      });
+      gameButtonSubmit.disabled = answersFiltered.length <= 0;
+    });
+    form.addEventListener(`submit`, (evt) => this.onAnswer(evt));
   }
 }

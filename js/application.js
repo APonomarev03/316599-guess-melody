@@ -4,13 +4,7 @@ import ResultPresenter from "./presenters/result-presenter";
 import FailTimePresenter from "./presenters/fail-time-presenter";
 import FailTriesPresenter from "./presenters/fail-tries-presenter";
 import GamePresenter from "./presenters/game-presenter";
-
-const main = document.querySelector(`.app`);
-
-const changeView = (element) => {
-  main.innerHTML = ``;
-  main.appendChild(element);
-};
+import {changeView} from "./utils";
 
 export default class Application {
   static showWelcome() {
