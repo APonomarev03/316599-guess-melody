@@ -6,7 +6,8 @@ const INITIAL_STATE = Object.freeze({
   notes: 3,
   scores: 0,
   answers: [],
-  time: 300
+  time: 300,
+  currentAnswerTime: 0
 });
 
 export default class GameModel {
@@ -40,7 +41,24 @@ export default class GameModel {
   get gameResults() {
     const statistics = Object.assign([], PLAYERS_STATISTICS);
     this._state.scores = countScorePlayer(this._state.answers);
+    this._state = Object.assign({}, this._state, {
+      time: INITIAL_STATE.time - this._state.time
+    });
     return showPlayerResult(statistics, this._state);
+  }
+
+  get currentAnswerTime() {
+    return this._state.currentAnswerTime;
+  }
+
+  incrementAnswerTime() {
+    this._state.currentAnswerTime += 1;
+  }
+
+  resetAnswerTime() {
+    this._state = Object.assign({}, this._state, {
+      currentAnswerTime: 0
+    });
   }
 
   changeLevel() {
@@ -58,11 +76,13 @@ export default class GameModel {
   }
 
   addCorrectAnswer() {
-    this._state.answers = [...this._state.answers, {currentAnswer: true, time: INITIAL_STATE.time - this._state.time}];
+    this._state.answers = [...this._state.answers, {currentAnswer: true, time: this._state.currentAnswerTime}];
+    this.resetAnswerTime();
   }
 
   addInvalidAnswer() {
-    this._state.answers = [...this._state.answers, {currentAnswer: false, time: INITIAL_STATE.time - this._state.time}];
+    this._state.answers = [...this._state.answers, {currentAnswer: false, time: this._state.currentAnswerTime}];
+    this.resetAnswerTime();
   }
 
   reduceLives() {
