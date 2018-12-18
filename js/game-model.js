@@ -1,8 +1,8 @@
-import {PLAYERS_STATISTICS, QUESTIONS} from './data/game';
+import {PLAYERS_STATISTICS} from './data/game';
 import {countScorePlayer, showPlayerResult} from "./modules/statistics";
 
 const INITIAL_STATE = Object.freeze({
-  level: 1,
+  level: 0,
   notes: 3,
   scores: 0,
   answers: [],
@@ -11,8 +11,10 @@ const INITIAL_STATE = Object.freeze({
 });
 
 export default class GameModel {
-  constructor() {
-    this._state = Object.assign({}, INITIAL_STATE);
+  constructor(data) {
+    this._state = Object.assign({}, INITIAL_STATE, {
+      questions: data
+    });
   }
 
   get failTries() {
@@ -24,18 +26,18 @@ export default class GameModel {
   }
 
   get winGame() {
-    return this._state.level === 10;
+    return this._state.level === 9;
   }
   get state() {
     return this._state;
   }
 
   get currentQuestion() {
-    return QUESTIONS[`screen-${this._state.level}`];
+    return this._state.questions[this._state.level];
   }
 
   get isArtistQuestion() {
-    return QUESTIONS[`screen-${this._state.level}`].type === `artist`;
+    return this._state.questions[this._state.level].type === `artist`;
   }
 
   get gameResults() {
@@ -66,7 +68,9 @@ export default class GameModel {
   }
 
   restart() {
-    this._state = Object.assign({}, INITIAL_STATE);
+    this._state = Object.assign({}, INITIAL_STATE, {
+      questions: this._state.questions
+    });
   }
 
   tick() {

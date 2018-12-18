@@ -2,9 +2,9 @@ import AbstractView from './abstract-view';
 import {gameConstants} from '../constants';
 
 export default class GenreView extends AbstractView {
-  constructor(question) {
+  constructor(data) {
     super();
-    this.question = question;
+    this.data = data;
   }
 
   get template() {
@@ -12,14 +12,14 @@ export default class GenreView extends AbstractView {
       <section class="main">
         <section class="game game--genre">
           <section class="game__screen">
-            <h2 class="game__title">${this.question.text}</h2>
+            <h2 class="game__title">${this.data.question}</h2>
             <form class="game__tracks">
-              ${this.question.answers.map((answer, idx) => `<div class="track">
+              ${this.data.answers.map((answer, idx) => `<div class="track">
                   <div class="track__status">
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="game__answer">
+                  <div ${gameConstants.DEBUG && answer.genre === this.data.genre ? gameConstants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>

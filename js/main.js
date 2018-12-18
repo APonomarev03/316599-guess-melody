@@ -1,2 +1,2 @@
 import Application from "./application";
-Application.showWelcome();
+Application.startGame();
