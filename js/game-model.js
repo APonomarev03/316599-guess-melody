@@ -29,6 +29,7 @@ export default class GameModel {
   get winGame() {
     return this._state.level === 9;
   }
+
   get state() {
     return this._state;
   }

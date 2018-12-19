@@ -4,6 +4,7 @@ import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
 import {changeView} from "../utils";
+
 let activeTrack;
 
 const pauseActiveTrack = (audio) => {
