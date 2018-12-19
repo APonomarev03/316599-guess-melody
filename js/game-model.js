@@ -51,7 +51,7 @@ export default class GameModel {
   }
 
   replaceCurrentTime() {
-    _currentTime = this._state.time;
+    currentTime = this._state.time;
   }
 
   changeLevel() {
