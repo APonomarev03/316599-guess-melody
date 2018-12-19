@@ -9,7 +9,7 @@ const INITIAL_STATE = Object.freeze({
   time: 300
 });
 
-let _currentTime = INITIAL_STATE.time;
+let currentTime = INITIAL_STATE.time;
 
 export default class GameModel {
   constructor() {
@@ -67,12 +67,12 @@ export default class GameModel {
   }
 
   addCorrectAnswer() {
-    this._state.answers = [...this._state.answers, {currentAnswer: true, time: _currentTime - this._state.time}];
+    this._state.answers = [...this._state.answers, {currentAnswer: true, time: currentTime - this._state.time}];
     this.replaceCurrentTime();
   }
 
   addInvalidAnswer() {
-    this._state.answers = [...this._state.answers, {currentAnswer: false, time: _currentTime - this._state.time}];
+    this._state.answers = [...this._state.answers, {currentAnswer: false, time: currentTime - this._state.time}];
     this.replaceCurrentTime();
   }
 
