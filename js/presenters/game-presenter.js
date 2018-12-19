@@ -40,7 +40,6 @@ export default class GamePresenter {
       Application.showFailTime();
     } else {
       this.model.tick();
-      this.model.incrementAnswerTime();
       this.updateHeader();
       this._timer = setTimeout(() => this._tick(), 1000);
     }
