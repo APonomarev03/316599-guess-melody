@@ -2,9 +2,9 @@ import AbstractView from './abstract-view';
 import {gameConstants} from '../constants';
 
 export default class ArtistView extends AbstractView {
-  constructor(question) {
+  constructor(data) {
     super();
-    this.question = question;
+    this.data = data;
   }
 
   get template() {
@@ -12,16 +12,16 @@ export default class ArtistView extends AbstractView {
       <section class="main">
         <section class="game game--artist">
           <section class="game__screen">
-            <h2 class="game__title">${this.question.text}</h2>
+            <h2 class="game__title">${this.data.question}</h2>
             <div class="game__track">
               <button class="track__button track__button--play" type="button"></button>
-              <audio src="${this.question.answers[0].src}"></audio>
+              <audio src="${this.data.src}"></audio>
             <form class="game__artist">
-              ${this.question.answers.map((answer) => `<div class="artist">
-                  <input class="artist__input visually-hidden" value="${answer.artist}" type="radio" name="answer">
+              ${this.data.answers.map((answer) => `<div class="artist">
+                  <input class="artist__input visually-hidden" value="${answer.title}" type="radio" name="answer">
                   <label class="artist__block" for="answer-1">
-                    <img ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image}" alt="${answer.artist}">
-                    <span class="artist__name">${answer.artist}</span>
+                    <img ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
+                    <span class="artist__name">${answer.title}</span>
                   </label>
               </div>`)}
             </form>

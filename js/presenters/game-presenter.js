@@ -4,6 +4,7 @@ import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
 import {changeView} from "../utils";
+
 let activeTrack;
 
 const pauseActiveTrack = (audio) => {
@@ -17,13 +18,17 @@ export default class GamePresenter {
   constructor(model) {
     this.model = model;
     this.header = new HeaderView(this.model.state);
-    this.level = new ArtistView(this.model.currentQuestion);
+    this.level = this.currentTypeLevel;
     this.root = document.createElement(`div`);
     this.root.appendChild(this.header.element);
     this.root.appendChild(this.level.element);
     this.root.appendChild(new FooterView().element);
     this.bind();
     this._timer = null;
+  }
+
+  get currentTypeLevel() {
+    return this.model.isArtistQuestion ? new ArtistView(this.model.currentQuestion) : new GenreView(this.model.currentQuestion);
   }
 
   get element() {
@@ -69,7 +74,7 @@ export default class GamePresenter {
     } else {
       this.model.changeLevel();
       this.updateHeader();
-      const level = this.model.isArtistQuestion ? new ArtistView(this.model.currentQuestion) : new GenreView(this.model.currentQuestion);
+      const level = this.currentTypeLevel;
       this.changeContentView(level);
       this.bind();
       this.continueGame();
@@ -111,7 +116,7 @@ export default class GamePresenter {
         const wrapper = clickedElement.closest(`.artist`);
         const inputElement = wrapper.querySelector(`input`);
         const successAnswer = this.model.currentQuestion.answers.find((answer) => answer.isCorrect);
-        if (inputElement.value === successAnswer.artist) {
+        if (inputElement.value === successAnswer.title) {
           this.model.addCorrectAnswer();
         } else {
           this.model.addInvalidAnswer();
@@ -122,7 +127,7 @@ export default class GamePresenter {
         const playerAnswers = Array.from(form.querySelectorAll(`input[type=checkbox]`));
         const correctAnswers = this.model.currentQuestion.answers.filter((answer) => answer);
         const playersAnswersFiltered = playerAnswers.map((answer) => !!answer.checked);
-        const correctAnswersFiltered = correctAnswers.map((answer) => !!answer.isCorrect);
+        const correctAnswersFiltered = correctAnswers.map((answer) => answer.genre === this.model.currentQuestion.genre);
         const isCorrectAnswer = playersAnswersFiltered.join() === correctAnswersFiltered.join();
 
         if (!isCorrectAnswer) {
