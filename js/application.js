@@ -8,7 +8,7 @@ import {changeView, checkStatus} from "./utils";
 import SplashView from "./views/splash-view";
 import ErrorView from "./views/error-view";
 
-let questData;
+let questions;
 
 export default class Application {
 
@@ -20,7 +20,7 @@ export default class Application {
       then(checkStatus).
       then((response) => response.json()).
       then((data) => {
-        questData = data;
+        questions = data;
       }).
       then(() => Application.showWelcome()).
       catch(Application.showError).
