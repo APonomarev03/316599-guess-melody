@@ -1,4 +1,4 @@
-import {gameConstants} from "../modules/magic-constants";
+import {gameConstants} from "../constants";
 
 export const countScorePlayer = (answers) => {
   const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= gameConstants.FAST_ANSWER).length;

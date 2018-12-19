@@ -19,7 +19,7 @@ export default class HeaderView extends AbstractView {
       </filter>
     </svg>
       <header class="game__header">
-        ${this.state.level > 0 ? `<a class="game__back" href="#">
+        ${this.state.level >= 0 ? `<a class="game__back" href="#">
             <span class="visually-hidden">Сыграть ещё раз</span>
             <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
           </a>
@@ -29,9 +29,9 @@ export default class HeaderView extends AbstractView {
           </svg>
     
           <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-            <span class="timer__mins">${this.state.time.minutes}</span>
+            <span class="timer__mins">${Math.floor(this.state.time / 60)}</span>
           <span class="timer__dots">:</span>
-          <span class="timer__secs">${this.state.time.seconds}</span>
+          <span class="timer__secs">${this.state.time % 60}</span>
         </div>
   
         <div class="game__mistakes">${new Array(this.state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}
@@ -43,10 +43,7 @@ export default class HeaderView extends AbstractView {
   bind() {
     if (this.state.level > 0) {
       const gameBack = this.element.querySelector(`.game__back`);
-      gameBack.addEventListener(`click`, (evt) => {
-        evt.preventDefault();
-        this.onClick(`header btn click`);
-      });
+      gameBack.addEventListener(`click`, (evt) => this.onClick(evt));
     }
   }
 }

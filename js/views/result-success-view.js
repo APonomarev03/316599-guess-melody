@@ -13,7 +13,7 @@ export default class ResultSuccessView extends AbstractView {
         <section class="result">
           <div class="result__logo"><img src="/img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
           <h2 class="result__title">Вы настоящий меломан!</h2>
-          <p class="result__total">За ${this.state.time.minutes} минуты и ${this.state.time.seconds} секунд вы набрали ${this.state.scores} баллов, совершив ${3 - this.state.notes} ошибки</p>
+          <p class="result__total">За ${Math.floor(this.state.time / 60)} минуты и ${this.state.time % 60} секунд вы набрали ${this.state.scores} баллов, совершив ${3 - this.state.notes} ошибки</p>
           <p class="result__text">${this.results}</p>
           <button class="result__replay" type="button">Cыграть еще раз!</button>
         </section>

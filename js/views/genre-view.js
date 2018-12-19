@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {gameConstants} from '../constants';
 
 export default class GenreView extends AbstractView {
   constructor(question) {
@@ -18,7 +19,7 @@ export default class GenreView extends AbstractView {
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div class="game__answer">
+                  <div ${gameConstants.DEBUG && answer.isCorrect ? gameConstants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>
@@ -31,8 +32,7 @@ export default class GenreView extends AbstractView {
   }
 
   onButtonClick() {}
-  onAnswersChecked() {}
-  onSubmit() {}
+  onAnswer() {}
 
   bind() {
     const form = this.element.querySelector(`.game__tracks`);
@@ -44,7 +44,12 @@ export default class GenreView extends AbstractView {
       button.addEventListener(`click`, (evt) => this.onButtonClick(evt));
     });
 
-    form.addEventListener(`change`, () => this.onAnswersChecked(answers, gameButtonSubmit));
-    form.addEventListener(`submit`, (evt) => this.onSubmit(evt));
+    form.addEventListener(`change`, () => {
+      const answersFiltered = Array.from(answers).filter((answer) => {
+        return answer.checked;
+      });
+      gameButtonSubmit.disabled = answersFiltered.length <= 0;
+    });
+    form.addEventListener(`submit`, (evt) => this.onAnswer(evt));
   }
 }
