@@ -1,4 +1,4 @@
-import {gameConstants} from "../constants";
+import {gameConstants} from "./constants";
 
 export const countScorePlayer = (answers) => {
   const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= gameConstants.FAST_ANSWER).length;
@@ -31,6 +31,14 @@ export const showPlayerResult = (statistics, results) => {
   const playerPositionStatistics = newStatistics.indexOf(results.scores) + 1;
   const successPercent = (statistics.length - playerPositionStatistics) / statistics.length * 100;
   return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${successPercent}% игроков`;
+};
+
+export const manageNewStatistics = (oldStatistics, scores) => {
+  const newStatistics = oldStatistics.concat(scores);
+  newStatistics.sort((left, right) => {
+    return right - left;
+  });
+  return newStatistics;
 };
 
 export const managePlayerLives = (notes) => {

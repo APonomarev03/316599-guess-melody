@@ -3,7 +3,7 @@ import ArtistView from '../views/artist-view';
 import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
-import {changeView} from "../utils";
+import {changeView} from "../utils/utils";
 
 let activeTrack;
 
@@ -139,8 +139,7 @@ export default class GamePresenter {
       }
 
       if (this.model.winGame) {
-        const results = this.model.gameResults;
-        Application.showStats(this.model.state, results);
+        Application.showStats(this.model._state);
       } else if (this.model.failTries) {
         Application.showFailTries();
       } else if (this.model.failTime) {

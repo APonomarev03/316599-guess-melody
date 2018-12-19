@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {gameConstants} from '../constants';
+import {gameConstants} from '../utils/constants';
 
 export default class ArtistView extends AbstractView {
   constructor(data) {

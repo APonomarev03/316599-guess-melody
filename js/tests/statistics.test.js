@@ -1,5 +1,5 @@
 import {assert} from "chai";
-import {countScorePlayer, showPlayerResult, managePlayerLives, changeLevel} from "../modules/statistics";
+import {countScorePlayer, showPlayerResult, managePlayerLives, changeLevel} from "../utils/statistics";
 
 describe(`player scoring`, () => {
   it(`should exceed the time limit`, () => {

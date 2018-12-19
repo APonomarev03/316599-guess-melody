@@ -1,13 +1,4 @@
-import {PLAYERS_STATISTICS} from './data/game';
-import {countScorePlayer, showPlayerResult} from "./modules/statistics";
-
-const INITIAL_STATE = Object.freeze({
-  level: 0,
-  notes: 3,
-  scores: 0,
-  answers: [],
-  time: 300
-});
+import {INITIAL_STATE} from "../game-data";
 
 let currentTime = INITIAL_STATE.time;
 
@@ -42,15 +33,6 @@ export default class GameModel {
     return this._state.questions[this._state.level].type === `artist`;
   }
 
-  get gameResults() {
-    const statistics = Object.assign([], PLAYERS_STATISTICS);
-    this._state.scores = countScorePlayer(this._state.answers);
-    this._state = Object.assign({}, this._state, {
-      time: INITIAL_STATE.time - this._state.time
-    });
-    return showPlayerResult(statistics, this._state);
-  }
-
   replaceCurrentTime() {
     currentTime = this._state.time;
   }
@@ -77,7 +59,7 @@ export default class GameModel {
   }
 
   addInvalidAnswer() {
-    this._state.answers = [...this._state.answers, {currentAnswer: false, time: currentTime - this._state.time}];
+    this._state.answers = [...this._state.answers, {currentAnswer: false, time: -1}];
     this.replaceCurrentTime();
   }
 
