@@ -1,4 +1,5 @@
 import {INITIAL_STATE} from "../game-data";
+import {countScorePlayer, manageNewStatistics, showPlayerResult} from "../utils/statistics";
 
 let currentTime = INITIAL_STATE.time;
 
@@ -65,5 +66,19 @@ export default class GameModel {
 
   reduceLives() {
     this._state.notes -= 1;
+  }
+
+  manageStatistics(data) {
+    let serverStatistics = data[data.length - 1].answers;
+    this._state.scores = countScorePlayer(this._state.answers);
+    this._state = Object.assign({}, this._state, {
+      time: INITIAL_STATE.time - this._state.time
+    });
+    this._state.answers = data[data.length - 1].answers;
+    const results = showPlayerResult(serverStatistics, this._state);
+    const filteredStatistics = {
+      answers: manageNewStatistics(serverStatistics, this._state.scores)
+    };
+    return {results, filteredStatistics, state: this.state};
   }
 }

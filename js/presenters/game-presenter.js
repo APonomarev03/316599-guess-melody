@@ -48,7 +48,7 @@ export default class GamePresenter {
 
   startGame() {
     this.model.restart();
-    setTimeout(() => this._tick(), 1000);
+    this._tick();
     changeView(this.root);
   }
 
@@ -139,7 +139,7 @@ export default class GamePresenter {
       }
 
       if (this.model.winGame) {
-        Application.showStats(this.model._state);
+        Application.showStats(this.model);
       } else if (this.model.failTries) {
         Application.showFailTries();
       } else if (this.model.failTime) {
