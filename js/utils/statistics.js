@@ -30,7 +30,7 @@ export const showPlayerResult = (statistics, results) => {
   });
   const playerPositionStatistics = newStatistics.indexOf(results.scores) + 1;
   const successPercent = (statistics.length - playerPositionStatistics) / statistics.length * 100;
-  return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${successPercent}% игроков`;
+  return `Вы заняли ${playerPositionStatistics} место из ${statistics.length} игроков. Это лучше, чем у ${Math.round(successPercent)}% игроков`;
 };
 
 export const manageNewStatistics = (oldStatistics, scores) => {

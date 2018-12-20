@@ -46,12 +46,16 @@ export default class Application {
     changeView(new FailTimePresenter().element);
   }
 
-  static showStats(model) {
+  static showStats(state) {
     Loader.loadResults().
       then((data) => {
-        const updateData = model.manageStatistics(data);
-        Loader.saveResults(updateData.filteredStatistics);
-        const statistics = new ResultPresenter(model.state, updateData.results);
+        let serverStatistics = data[data.length - 1].answers;
+        const results = showPlayerResult(serverStatistics, state);
+        const filteredStatistics = {
+          answers: manageNewStatistics(serverStatistics, state.scores)
+        };
+        Loader.saveResults(filteredStatistics);
+        const statistics = new ResultPresenter(state, results);
         changeView(statistics.element);
       }).
       catch(Application.showError);

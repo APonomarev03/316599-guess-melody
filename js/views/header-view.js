@@ -29,9 +29,9 @@ export default class HeaderView extends AbstractView {
           </svg>
     
           <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-            <span class="timer__mins">${Math.floor(this.state.time / 60)}</span>
+          <span ${this.state.time < 30 ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this.state.time / 60)}</span>
           <span class="timer__dots">:</span>
-          <span class="timer__secs">${this.state.time % 60}</span>
+          <span ${this.state.time < 30 ? `style="color: red"` : ``} class="timer__secs">${this.state.time % 60}</span>
         </div>
   
         <div class="game__mistakes">${new Array(this.state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}

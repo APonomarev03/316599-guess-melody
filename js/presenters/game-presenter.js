@@ -35,26 +35,31 @@ export default class GamePresenter {
     return this.root;
   }
 
-  _tick() {
+  startTimer() {
     if (this.model.failTime) {
-      this.stopGame();
       Application.showFailTime();
     } else {
-      this.model.tick();
-      this.updateHeader();
-      this._timer = setTimeout(() => this._tick(), 1000);
+      this._timer = setTimeout(() => {
+        this.model.tick();
+        this.startTimer();
+        this.updateHeader();
+      }, 1000);
     }
+  }
+
+  stopTimer() {
+    clearTimeout(this._timer);
   }
 
   startGame() {
     this.model.restart();
-    this._tick();
     changeView(this.root);
+    this.startTimer();
   }
 
   continueGame() {
-    setTimeout(() => this._tick(), 1000);
     changeView(this.root);
+    this.startTimer();
   }
 
   updateHeader() {
@@ -81,10 +86,6 @@ export default class GamePresenter {
     }
   }
 
-  stopGame() {
-    clearInterval(this._timer);
-  }
-
   changeContentView(view) {
     this.root.replaceChild(view.element, this.level.element);
     this.level = view;
@@ -108,7 +109,7 @@ export default class GamePresenter {
     };
 
     this.level.onAnswer = (evt) => {
-      this.stopGame();
+      this.stopTimer();
       evt.preventDefault();
 
       if (this.model.isArtistQuestion) {
@@ -139,7 +140,8 @@ export default class GamePresenter {
       }
 
       if (this.model.winGame) {
-        Application.showStats(this.model);
+        this.model.updateStatistics();
+        Application.showStats(this.model.state);
       } else if (this.model.failTries) {
         Application.showFailTries();
       } else if (this.model.failTime) {
