@@ -1,10 +1,10 @@
 import AbstractView from './abstract-view';
-import {gameConstants} from '../utils/constants';
+import {constants} from '../utils/constants';
 
 export default class GenreView extends AbstractView {
   constructor(data) {
     super();
-    this.data = data;
+    this._data = data;
   }
 
   get template() {
@@ -12,14 +12,14 @@ export default class GenreView extends AbstractView {
       <section class="main">
         <section class="game game--genre">
           <section class="game__screen">
-            <h2 class="game__title">${this.data.question}</h2>
+            <h2 class="game__title">${this._data.question}</h2>
             <form class="game__tracks">
-              ${this.data.answers.map((answer, idx) => `<div class="track">
+              ${this._data.answers.map((answer, idx) => `<div class="track">
                   <div class="track__status">
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div ${gameConstants.DEBUG && answer.genre === this.data.genre ? gameConstants.DEBUG_STYLE : ``} class="game__answer">
+                  <div ${constants.DEBUG && answer.genre === this._data.genre ? constants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>
@@ -39,6 +39,9 @@ export default class GenreView extends AbstractView {
     const tracksButton = this.element.querySelectorAll(`.track__button`);
     const gameButtonSubmit = this.element.querySelector(`.game__submit`);
     const answers = this.element.querySelectorAll(`.game__answer input`);
+    const firstAudio = tracksButton[0].parentElement.querySelector(`audio`);
+    firstAudio.play();
+    tracksButton[0].classList.remove(`track__button--play`);
 
     tracksButton.forEach((button) => {
       button.addEventListener(`click`, (evt) => this.onButtonClick(evt));

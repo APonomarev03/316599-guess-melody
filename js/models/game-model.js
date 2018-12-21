@@ -34,7 +34,7 @@ export default class GameModel {
     return this._state.questions[this._state.level].type === `artist`;
   }
 
-  replaceCurrentTime() {
+  _replaceCurrentTime() {
     currentTime = this._state.time;
   }
 
@@ -56,12 +56,12 @@ export default class GameModel {
 
   addCorrectAnswer() {
     this._state.answers = [...this._state.answers, {currentAnswer: true, time: currentTime - this._state.time}];
-    this.replaceCurrentTime();
+    this._replaceCurrentTime();
   }
 
   addInvalidAnswer() {
     this._state.answers = [...this._state.answers, {currentAnswer: false, time: -1}];
-    this.replaceCurrentTime();
+    this._replaceCurrentTime();
   }
 
   reduceLives() {
