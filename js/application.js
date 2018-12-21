@@ -1,12 +1,14 @@
 import WelcomePresenter from "./presenters/welcome-presenter";
-import GameModel from "./game-model";
+import GameModel from "./models/game-model";
 import ResultPresenter from "./presenters/result-presenter";
 import FailTimePresenter from "./presenters/fail-time-presenter";
 import FailTriesPresenter from "./presenters/fail-tries-presenter";
 import GamePresenter from "./presenters/game-presenter";
-import {changeView, checkStatus} from "./utils";
+import {changeView} from "./utils/utils";
 import SplashView from "./views/splash-view";
 import ErrorView from "./views/error-view";
+import Loader from "./loader";
+import {showPlayerResult, manageNewStatistics} from "./utils/statistics";
 
 let questions;
 
@@ -16,9 +18,7 @@ export default class Application {
     const splash = new SplashView();
     changeView(splash.element);
     splash.start();
-    window.fetch(`https://es.dump.academy/guess-melody/questions`).
-      then(checkStatus).
-      then((response) => response.json()).
+    Loader.loadQuestions().
       then((data) => {
         questions = data;
       }).
@@ -33,7 +33,7 @@ export default class Application {
   }
 
   static showGame() {
-    const gameScreen = new GamePresenter(new GameModel(questData));
+    const gameScreen = new GamePresenter(new GameModel(questions));
     gameScreen.startGame();
   }
 
@@ -45,9 +45,19 @@ export default class Application {
     changeView(new FailTimePresenter().element);
   }
 
-  static showStats(state, results) {
-    const statistics = new ResultPresenter(state, results);
-    changeView(statistics.element);
+  static showStats(state) {
+    Loader.loadResults().
+      then((data) => {
+        const serverStatistics = data[data.length - 1].answers;
+        const results = showPlayerResult(serverStatistics, state);
+        const filteredStatistics = {
+          answers: manageNewStatistics(serverStatistics, state.scores)
+        };
+        Loader.saveResults(filteredStatistics);
+        const statistics = new ResultPresenter(state, results);
+        changeView(statistics.element);
+      }).
+      catch(Application.showError);
   }
 
   static showError(error) {

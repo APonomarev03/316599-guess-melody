@@ -3,7 +3,8 @@ import ArtistView from '../views/artist-view';
 import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
-import {changeView} from "../utils";
+import {changeView} from "../utils/utils";
+import {gameConstants} from '../utils/constants';
 
 let activeTrack;
 
@@ -18,6 +19,10 @@ export default class GamePresenter {
   constructor(model) {
     this.model = model;
     this.header = new HeaderView(this.model.state);
+    this.header.onClick = (evt) => {
+      evt.preventDefault();
+      Application.showWelcome();
+    };
     this.level = this.currentTypeLevel;
     this.root = document.createElement(`div`);
     this.root.appendChild(this.header.element);
@@ -35,26 +40,31 @@ export default class GamePresenter {
     return this.root;
   }
 
-  _tick() {
+  startTimer() {
     if (this.model.failTime) {
-      this.stopGame();
       Application.showFailTime();
     } else {
-      this.model.tick();
-      this.updateHeader();
-      this._timer = setTimeout(() => this._tick(), 1000);
+      this._timer = setTimeout(() => {
+        this.model.tick();
+        this.startTimer();
+        this.updateHeader();
+      }, gameConstants.ONE_SECOND);
     }
+  }
+
+  stopTimer() {
+    clearTimeout(this._timer);
   }
 
   startGame() {
     this.model.restart();
-    setTimeout(() => this._tick(), 1000);
     changeView(this.root);
+    this.startTimer();
   }
 
   continueGame() {
-    setTimeout(() => this._tick(), 1000);
     changeView(this.root);
+    this.startTimer();
   }
 
   updateHeader() {
@@ -81,16 +91,13 @@ export default class GamePresenter {
     }
   }
 
-  stopGame() {
-    clearInterval(this._timer);
-  }
-
   changeContentView(view) {
     this.root.replaceChild(view.element, this.level.element);
     this.level = view;
   }
 
   bind() {
+
     this.level.onButtonClick = (evt) => {
       const trackBtn = evt.target;
       const audioElement = trackBtn.parentElement.querySelector(`audio`);
@@ -108,7 +115,7 @@ export default class GamePresenter {
     };
 
     this.level.onAnswer = (evt) => {
-      this.stopGame();
+      this.stopTimer();
       evt.preventDefault();
 
       if (this.model.isArtistQuestion) {
@@ -139,8 +146,8 @@ export default class GamePresenter {
       }
 
       if (this.model.winGame) {
-        const results = this.model.gameResults;
-        Application.showStats(this.model.state, results);
+        this.model.updateStatistics();
+        Application.showStats(this.model.state);
       } else if (this.model.failTries) {
         Application.showFailTries();
       } else if (this.model.failTime) {
