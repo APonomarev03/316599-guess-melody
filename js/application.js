@@ -8,8 +8,7 @@ import {changeView} from "./utils/utils";
 import SplashView from "./views/splash-view";
 import ErrorView from "./views/error-view";
 import Loader from "./loader";
-import {INITIAL_STATE} from "./game-data";
-import {countScorePlayer, showPlayerResult, manageNewStatistics} from "./utils/statistics";
+import {showPlayerResult, manageNewStatistics} from "./utils/statistics";
 
 let questions;
 
@@ -49,7 +48,7 @@ export default class Application {
   static showStats(state) {
     Loader.loadResults().
       then((data) => {
-        let serverStatistics = data[data.length - 1].answers;
+        const serverStatistics = data[data.length - 1].answers;
         const results = showPlayerResult(serverStatistics, state);
         const filteredStatistics = {
           answers: manageNewStatistics(serverStatistics, state.scores)

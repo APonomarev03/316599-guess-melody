@@ -1,4 +1,5 @@
 import AbstractView from './abstract-view';
+import {gameConstants} from '../utils/constants';
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
@@ -29,9 +30,9 @@ export default class HeaderView extends AbstractView {
           </svg>
     
           <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <span ${this.state.time < 30 ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this.state.time / 60)}</span>
+          <span ${this.state.time < gameConstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this.state.time / 60)}</span>
           <span class="timer__dots">:</span>
-          <span ${this.state.time < 30 ? `style="color: red"` : ``} class="timer__secs">${this.state.time % 60}</span>
+          <span ${this.state.time < gameConstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__secs">${this.state.time % 60}</span>
         </div>
   
         <div class="game__mistakes">${new Array(this.state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}
@@ -41,9 +42,7 @@ export default class HeaderView extends AbstractView {
   onClick() {}
 
   bind() {
-    if (this.state.level > 0) {
-      const gameBack = this.element.querySelector(`.game__back`);
-      gameBack.addEventListener(`click`, (evt) => this.onClick(evt));
-    }
+    const gameBack = this.element.querySelector(`.game__back`);
+    gameBack.addEventListener(`click`, (evt) => this.onClick(evt));
   }
 }

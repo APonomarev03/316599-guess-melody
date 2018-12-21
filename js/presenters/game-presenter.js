@@ -4,6 +4,7 @@ import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
 import {changeView} from "../utils/utils";
+import {gameConstants} from '../utils/constants';
 
 let activeTrack;
 
@@ -18,6 +19,10 @@ export default class GamePresenter {
   constructor(model) {
     this.model = model;
     this.header = new HeaderView(this.model.state);
+    this.header.onClick = (evt) => {
+      evt.preventDefault();
+      Application.showWelcome();
+    };
     this.level = this.currentTypeLevel;
     this.root = document.createElement(`div`);
     this.root.appendChild(this.header.element);
@@ -43,7 +48,7 @@ export default class GamePresenter {
         this.model.tick();
         this.startTimer();
         this.updateHeader();
-      }, 1000);
+      }, gameConstants.ONE_SECOND);
     }
   }
 
@@ -92,6 +97,7 @@ export default class GamePresenter {
   }
 
   bind() {
+
     this.level.onButtonClick = (evt) => {
       const trackBtn = evt.target;
       const audioElement = trackBtn.parentElement.querySelector(`audio`);
