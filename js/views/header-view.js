@@ -1,10 +1,10 @@
 import AbstractView from './abstract-view';
-import {gameConstants} from '../utils/constants';
+import {constants} from '../utils/constants';
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
     super();
-    this.state = state;
+    this._state = state;
   }
 
   get template() {
@@ -20,7 +20,7 @@ export default class HeaderView extends AbstractView {
       </filter>
     </svg>
       <header class="game__header">
-        ${this.state.level >= 0 ? `<a class="game__back" href="#">
+        ${this._state.level >= 0 ? `<a class="game__back" href="#">
             <span class="visually-hidden">Сыграть ещё раз</span>
             <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
           </a>
@@ -30,12 +30,12 @@ export default class HeaderView extends AbstractView {
           </svg>
     
           <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <span ${this.state.time < gameConstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this.state.time / 60)}</span>
+          <span ${this._state.time < constants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this._state.time / 60)}</span>
           <span class="timer__dots">:</span>
-          <span ${this.state.time < gameConstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__secs">${this.state.time % 60}</span>
+          <span ${this._state.time < constants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__secs">${this._state.time % 60}</span>
         </div>
   
-        <div class="game__mistakes">${new Array(this.state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}
+        <div class="game__mistakes">${new Array(3 - this._state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}
        </header>`;
   }
 
