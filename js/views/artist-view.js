@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {constants} from '../utils/constants';
+import {Сonstants} from '../utils/constants';
 
 export default class ArtistView extends AbstractView {
   constructor(data) {
@@ -20,7 +20,7 @@ export default class ArtistView extends AbstractView {
               ${this._data.answers.map((answer) => `<div class="artist">
                   <input class="artist__input visually-hidden" value="${answer.title}" type="radio" name="answer">
                   <label class="artist__block" for="answer-1">
-                    <img ${constants.DEBUG && answer.isCorrect ? constants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
+                    <img ${Сonstants.DEBUG && answer.isCorrect ? Сonstants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
                     <span class="artist__name">${answer.title}</span>
                   </label>
               </div>`)}

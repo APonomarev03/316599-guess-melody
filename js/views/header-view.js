@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {constants} from '../utils/constants';
+import {Сonstants} from '../utils/constants';
 
 export default class HeaderView extends AbstractView {
   constructor(state) {
@@ -30,9 +30,9 @@ export default class HeaderView extends AbstractView {
           </svg>
     
           <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-          <span ${this._state.time < constants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this._state.time / 60)}</span>
+          <span ${this._state.time < Сonstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__mins">${Math.floor(this._state.time / 60)}</span>
           <span class="timer__dots">:</span>
-          <span ${this._state.time < constants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__secs">${this._state.time % 60}</span>
+          <span ${this._state.time < Сonstants.BLINKING_TIME ? `style="color: red"` : ``} class="timer__secs">${this._state.time % 60}</span>
         </div>
   
         <div class="game__mistakes">${new Array(3 - this._state.notes).fill(`<div class="wrong"></div>`)}</div>` : ``}

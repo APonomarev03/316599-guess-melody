@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {constants} from '../utils/constants';
+import {Сonstants} from '../utils/constants';
 
 export default class GenreView extends AbstractView {
   constructor(data) {
@@ -19,7 +19,7 @@ export default class GenreView extends AbstractView {
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div ${constants.DEBUG && answer.genre === this._data.genre ? constants.DEBUG_STYLE : ``} class="game__answer">
+                  <div ${Сonstants.DEBUG && answer.genre === this._data.genre ? Сonstants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>
@@ -39,9 +39,6 @@ export default class GenreView extends AbstractView {
     const tracksButton = this.element.querySelectorAll(`.track__button`);
     const gameButtonSubmit = this.element.querySelector(`.game__submit`);
     const answers = this.element.querySelectorAll(`.game__answer input`);
-    const firstAudio = tracksButton[0].parentElement.querySelector(`audio`);
-    firstAudio.play();
-    tracksButton[0].classList.remove(`track__button--play`);
 
     tracksButton.forEach((button) => {
       button.addEventListener(`click`, (evt) => this.onButtonClick(evt));
