@@ -1,8 +1,8 @@
-import {constants} from "./constants";
+import {Сonstants} from "./constants";
 
 export const countScorePlayer = (answers) => {
-  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= constants.FAST_ANSWER).length;
-  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < constants.FAST_ANSWER).length;
+  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= Сonstants.FAST_ANSWER).length;
+  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < Сonstants.FAST_ANSWER).length;
   const mistakesCount = answers.filter((answer) => answer.currentAnswer === false).length;
   let totalTime = 0;
   answers.forEach((answer) => {
@@ -55,7 +55,7 @@ export const changeLevel = (level) => {
   if (level < 0) {
     throw new Error(`level cannot be less than zero`);
   }
-  if (level > constants.MAX_GAME_LEVEL) {
+  if (level > Сonstants.MAX_GAME_LEVEL) {
     throw new Error(`the level can not be more than ten`);
   }
   return level + 1;

@@ -4,7 +4,7 @@ import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
 import {changeView} from "../utils/utils";
-import {constants} from '../utils/constants';
+import {Сonstants} from '../utils/constants';
 
 let activeTrack;
 
@@ -60,7 +60,7 @@ export default class GamePresenter {
         this._model.tick();
         this.startTimer();
         this.updateHeader();
-      }, constants.ONE_SECOND);
+      }, Сonstants.ONE_SECOND);
     }
   }
 
