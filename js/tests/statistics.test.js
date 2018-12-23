@@ -53,7 +53,7 @@ describe(`show player results`, () => {
   });
   it(`player lost - ran out of effort`, () => {
     assert.equal(showPlayerResult([], {
-      notes: 0,
+      notes: -1,
       time: 30,
       scores: 5
     }), `У вас закончились все попытки. Ничего, повезёт в следующий раз!`);

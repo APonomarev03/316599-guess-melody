@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {Сonstants} from '../utils/constants';
+import {Constants} from '../utils/constants';
 
 export default class ArtistView extends AbstractView {
   constructor(data) {
@@ -20,7 +20,7 @@ export default class ArtistView extends AbstractView {
               ${this._data.answers.map((answer) => `<div class="artist">
                   <input class="artist__input visually-hidden" value="${answer.title}" type="radio" name="answer">
                   <label class="artist__block" for="answer-1">
-                    <img ${Сonstants.DEBUG && answer.isCorrect ? Сonstants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
+                    <img ${Constants.DEBUG && answer.isCorrect ? Constants.DEBUG_STYLE : ``} class="artist__picture" src="${answer.image.url}" alt="${answer.title}">
                     <span class="artist__name">${answer.title}</span>
                   </label>
               </div>`)}
@@ -30,13 +30,18 @@ export default class ArtistView extends AbstractView {
       </section>`;
   }
 
+  bind() {
+    const answerWrapperElement = this.element.querySelector(`.game__artist`);
+    const trackButtonElement = this.element.querySelector(`.track__button`);
+    trackButtonElement.addEventListener(`click`, (evt) => this.onButtonClick(evt.target));
+    answerWrapperElement.addEventListener(`click`, (evt) => {
+      const clickedElement = evt.target;
+      const wrapperElement = clickedElement.closest(`.artist`);
+      const answerElement = wrapperElement.querySelector(`input`);
+      return this.onAnswer(answerElement);
+    });
+  }
+
   onButtonClick() {}
   onAnswer() {}
-
-  bind() {
-    const answerWrapper = this.element.querySelector(`.game__artist`);
-    const trackButtons = this.element.querySelector(`.track__button`);
-    trackButtons.addEventListener(`click`, (evt) => this.onButtonClick(evt));
-    answerWrapper.addEventListener(`click`, (evt) => this.onAnswer(evt));
-  }
 }

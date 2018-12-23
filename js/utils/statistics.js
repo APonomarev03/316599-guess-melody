@@ -1,8 +1,8 @@
-import {Сonstants} from "./constants";
+import {Constants} from "./constants";
 
 export const countScorePlayer = (answers) => {
-  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= Сonstants.FAST_ANSWER).length;
-  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < Сonstants.FAST_ANSWER).length;
+  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= Constants.FAST_ANSWER).length;
+  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER).length;
   const mistakesCount = answers.filter((answer) => answer.currentAnswer === false).length;
   let totalTime = 0;
   answers.forEach((answer) => {
@@ -21,10 +21,10 @@ export const showPlayerResult = (statistics, results) => {
   if (results.time === 0) {
     return `Время вышло! Вы не успели отгадать все мелодии`;
   }
-  if (results.notes === 0) {
+  if (results.notes < 0) {
     return `У вас закончились все попытки. Ничего, повезёт в следующий раз!`;
   }
-  const newStatistics = statistics.concat(results.scores);
+  const newStatistics = statistics.slice(0, 9).concat(results.scores);
   newStatistics.sort((left, right) => {
     return right - left;
   });
@@ -34,7 +34,7 @@ export const showPlayerResult = (statistics, results) => {
 };
 
 export const manageNewStatistics = (oldStatistics, scores) => {
-  const newStatistics = oldStatistics.concat(scores);
+  const newStatistics = oldStatistics.slice(0, 9).concat(scores);
   newStatistics.sort((left, right) => {
     return right - left;
   });
@@ -55,7 +55,7 @@ export const changeLevel = (level) => {
   if (level < 0) {
     throw new Error(`level cannot be less than zero`);
   }
-  if (level > Сonstants.MAX_GAME_LEVEL) {
+  if (level > Constants.MAX_GAME_LEVEL) {
     throw new Error(`the level can not be more than ten`);
   }
   return level + 1;

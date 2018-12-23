@@ -21,10 +21,10 @@ export default class WelcomeView extends AbstractView {
     </section>`;
   }
 
-  onClick() {}
-
   bind() {
-    const btn = this.element.querySelector(`.welcome__button`);
-    btn.addEventListener(`click`, () => this.onClick(`click`));
+    const btnElement = this.element.querySelector(`.welcome__button`);
+    btnElement.addEventListener(`click`, () => this.onClick(`click`));
   }
+
+  onClick() {}
 }

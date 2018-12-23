@@ -1,5 +1,5 @@
 import AbstractView from './abstract-view';
-import {Сonstants} from '../utils/constants';
+import {Constants} from '../utils/constants';
 
 export default class GenreView extends AbstractView {
   constructor(data) {
@@ -19,7 +19,7 @@ export default class GenreView extends AbstractView {
                     <button class="track__button track__button--play" type="button"></button>
                     <audio src="${answer.src}"></audio>
                   </div>
-                  <div ${Сonstants.DEBUG && answer.genre === this._data.genre ? Сonstants.DEBUG_STYLE : ``} class="game__answer">
+                  <div ${Constants.DEBUG && answer.genre === this._data.genre ? Constants.DEBUG_STYLE : ``} class="game__answer">
                     <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>
@@ -31,25 +31,30 @@ export default class GenreView extends AbstractView {
       </section>`;
   }
 
-  onButtonClick() {}
-  onAnswer() {}
-
   bind() {
-    const form = this.element.querySelector(`.game__tracks`);
-    const tracksButton = this.element.querySelectorAll(`.track__button`);
-    const gameButtonSubmit = this.element.querySelector(`.game__submit`);
-    const answers = this.element.querySelectorAll(`.game__answer input`);
+    const formElement = this.element.querySelector(`.game__tracks`);
+    const trackElements = this.element.querySelectorAll(`.track__button`);
+    const gameSubmitElement = this.element.querySelector(`.game__submit`);
+    const answersElements = this.element.querySelectorAll(`.game__answer input`);
 
-    tracksButton.forEach((button) => {
+    trackElements.forEach((button) => {
       button.addEventListener(`click`, (evt) => this.onButtonClick(evt));
     });
 
-    form.addEventListener(`change`, () => {
-      const answersFiltered = Array.from(answers).filter((answer) => {
+    formElement.addEventListener(`change`, () => {
+      const answersFiltered = Array.from(answersElements).filter((answer) => {
         return answer.checked;
       });
-      gameButtonSubmit.disabled = answersFiltered.length <= 0;
+      gameSubmitElement.disabled = answersFiltered.length <= 0;
     });
-    form.addEventListener(`submit`, (evt) => this.onAnswer(evt));
+    formElement.addEventListener(`submit`, (evt) => {
+      evt.preventDefault();
+      const wrapperElement = evt.target;
+      const answersCheckedElements = Array.from(wrapperElement.querySelectorAll(`input[type=checkbox]`));
+      return this.onAnswer(answersCheckedElements);
+    });
   }
+
+  onButtonClick() {}
+  onAnswer() {}
 }

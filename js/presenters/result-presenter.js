@@ -4,11 +4,10 @@ import FooterView from "../views/footer-view";
 
 export default class ResultPresenter {
   constructor(state, results) {
-    this.screen = new ResultSuccessView(state, results);
-    this.footer = new FooterView();
+    this._screen = new ResultSuccessView(state, results);
     this._root = document.createElement(`div`);
-    this._root.appendChild(this.screen.element);
-    this._root.appendChild(this.footer.element);
+    this._root.appendChild(this._screen.element);
+    this._root.appendChild(new FooterView().element);
     this.bind();
   }
 
@@ -17,7 +16,7 @@ export default class ResultPresenter {
   }
 
   bind() {
-    this.screen.onReplay = () => {
+    this._screen.onReplay = () => {
       Application.showGame();
     };
   }

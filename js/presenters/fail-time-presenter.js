@@ -4,9 +4,9 @@ import Application from "../application";
 
 export default class FailTimePresenter {
   constructor() {
-    this.screen = new FailTimeView();
+    this._screen = new FailTimeView();
     this._root = document.createElement(`span`);
-    this._root.appendChild(this.screen.element);
+    this._root.appendChild(this._screen.element);
     this._root.appendChild(new FooterView().element);
     this.bind();
   }
@@ -16,7 +16,7 @@ export default class FailTimePresenter {
   }
 
   bind() {
-    this.screen.onReplay = () => {
+    this._screen.onReplay = () => {
       Application.showGame();
     };
   }

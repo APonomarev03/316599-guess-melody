@@ -16,12 +16,12 @@ export default class SplashView extends AbstractView {
   }
 
   start() {
-    this.cursor = ++this.cursor >= this._symbolsSeq.length ? 0 : this._cursor;
+    this._cursor = ++this._cursor >= this._symbolsSeq.length ? 0 : this._cursor;
     this.element.querySelector(`.loader__char`).textContent = this._symbolsSeq[this._cursor];
-    this.timeout = setTimeout(() => this.start(), 100);
+    this._timeout = setTimeout(() => this.start(), 100);
   }
 
   stop() {
-    clearTimeout(this.timeout);
+    clearTimeout(this._timeout);
   }
 }

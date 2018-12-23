@@ -3,25 +3,8 @@ import ArtistView from '../views/artist-view';
 import FooterView from '../views/footer-view';
 import Application from "../application";
 import GenreView from "../views/genre-view";
-import {changeView} from "../utils/utils";
-import {Сonstants} from '../utils/constants';
-
-let activeTrack;
-
-const pauseActiveTrack = (audio) => {
-  if (audio) {
-    audio.pause();
-    audio.parentElement.querySelector(`.track__button`).classList.add(`track__button--play`);
-  }
-};
-
-const enableFirstTrack = (level) => {
-  const tracks = level.element.querySelectorAll(`.track__button`);
-  const firstAudio = tracks[0].parentElement.querySelector(`audio`);
-  firstAudio.play();
-  tracks[0].classList.remove(`track__button--play`);
-  activeTrack = firstAudio;
-};
+import {changeView, toggleTrack, enableFirstTrack} from "../utils/utils";
+import {Constants} from '../utils/constants';
 
 export default class GamePresenter {
   constructor(model) {
@@ -45,7 +28,7 @@ export default class GamePresenter {
   }
 
   get currentTypeLevel() {
-    return this.model.isArtistQuestion ? new ArtistView(this.model.currentQuestion) : new GenreView(this.model.currentQuestion);
+    return this._model.isArtistQuestion ? new ArtistView(this._model.currentQuestion) : new GenreView(this._model.currentQuestion);
   }
 
   get element() {
@@ -60,7 +43,7 @@ export default class GamePresenter {
         this._model.tick();
         this.startTimer();
         this.updateHeader();
-      }, Сonstants.ONE_SECOND);
+      }, Constants.ONE_SECOND);
     }
   }
 
@@ -80,7 +63,7 @@ export default class GamePresenter {
   }
 
   updateHeader() {
-    const header = new HeaderView(this.model.state);
+    const header = new HeaderView(this._model.state);
     header.onClick = (evt) => {
       evt.preventDefault();
       Application.showWelcome();
@@ -90,7 +73,7 @@ export default class GamePresenter {
   }
 
   changeLevel() {
-    if (this.model.failTries) {
+    if (this._model.failTries) {
       this._model.restart();
       Application.showFailTries();
     } else {
@@ -109,49 +92,30 @@ export default class GamePresenter {
   }
 
   bind() {
-
     enableFirstTrack(this._level);
 
-    this._level.onButtonClick = (evt) => {
-      const trackBtn = evt.target;
-      const audioElement = trackBtn.parentElement.querySelector(`audio`);
-
-      if (trackBtn.classList.contains(`track__button--play`)) {
-        pauseActiveTrack(activeTrack);
-        audioElement.play();
-        activeTrack = audioElement;
-        trackBtn.classList.remove(`track__button--play`);
-      } else {
-        activeTrack = undefined;
-        audioElement.pause();
-        trackBtn.classList.add(`track__button--play`);
-      }
+    this._level.onButtonClick = (track) => {
+      toggleTrack(track);
     };
 
-    this._level.onAnswer = (evt) => {
+    this._level.onAnswer = (data) => {
       this.stopTimer();
-      evt.preventDefault();
 
-      if (this.model.isArtistQuestion) {
-        const clickedElement = evt.target;
-        const wrapper = clickedElement.closest(`.artist`);
-        const inputElement = wrapper.querySelector(`input`);
-        const successAnswer = this._model.currentQuestion.answers.find((answer) => answer.isCorrect);
-        if (inputElement.value === successAnswer.title) {
+      if (this._model.isArtistQuestion) {
+        const successAnswerElement = this._model.currentQuestion.answers.find((answer) => answer.isCorrect);
+        if (data.value === successAnswerElement.title) {
           this._model.addCorrectAnswer();
         } else {
           this._model.addInvalidAnswer();
           this._model.reduceLives();
         }
-      } else {
-        const form = evt.target;
-        const playerAnswers = Array.from(form.querySelectorAll(`input[type=checkbox]`));
-        const correctAnswers = this._model.currentQuestion.answers.filter((answer) => answer);
-        const playersAnswersFiltered = playerAnswers.map((answer) => !!answer.checked);
-        const correctAnswersFiltered = correctAnswers.map((answer) => answer.genre === this._model.currentQuestion.genre);
-        const isCorrectAnswer = playersAnswersFiltered.join() === correctAnswersFiltered.join();
+      } else if (!this._model.isArtistQuestion) {
+        const correctAnswersElements = this._model.currentQuestion.answers.filter((answer) => answer);
+        const playersAnswersFilteredElements = data.map((answer) => !!answer.checked);
+        const correctAnswersFilteredElements = correctAnswersElements.map((answer) => answer.genre === this._model.currentQuestion.genre);
+        const isCorrectAnswerElement = playersAnswersFilteredElements.join() === correctAnswersFilteredElements.join();
 
-        if (!isCorrectAnswer) {
+        if (!isCorrectAnswerElement) {
           this._model.addInvalidAnswer();
           this._model.reduceLives();
         } else {

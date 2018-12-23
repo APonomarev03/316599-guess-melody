@@ -20,10 +20,10 @@ export default class ResultSuccessView extends AbstractView {
       </section>`;
   }
 
-  onReplay() {}
-
   bind() {
-    const resultReplay = this.element.querySelector(`.result__replay`);
-    resultReplay.addEventListener(`click`, () => this.onReplay());
+    const resultReplayElement = this.element.querySelector(`.result__replay`);
+    resultReplayElement.addEventListener(`click`, () => this.onReplay());
   }
+
+  onReplay() {}
 }

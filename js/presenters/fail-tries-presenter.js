@@ -4,11 +4,10 @@ import FooterView from "../views/footer-view";
 
 export default class FailTriesPresenter {
   constructor() {
-    this.screen = new FailTriesView();
-    this.footer = new FooterView();
+    this._screen = new FailTriesView();
     this._root = document.createElement(`div`);
-    this._root.appendChild(this.screen.element);
-    this._root.appendChild(this.footer.element);
+    this._root.appendChild(this._screen.element);
+    this._root.appendChild(new FooterView().element);
     this.bind();
   }
 
@@ -17,7 +16,7 @@ export default class FailTriesPresenter {
   }
 
   bind() {
-    this.screen.onReplay = () => {
+    this._screen.onReplay = () => {
       Application.showGame();
     };
   }

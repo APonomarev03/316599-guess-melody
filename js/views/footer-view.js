@@ -16,5 +16,6 @@ export default class FooterView extends AbstractView {
     </section>
   </footer>`;
   }
+
   bind() {}
 }

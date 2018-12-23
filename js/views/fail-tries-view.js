@@ -17,10 +17,10 @@ export default class FailTriesView extends AbstractView {
       </section>`;
   }
 
-  onReplay() {}
-
   bind() {
-    const resultReplay = this.element.querySelector(`.result__replay`);
-    resultReplay.addEventListener(`click`, (evt) => this.onReplay(evt.target));
+    const resultReplayElement = this.element.querySelector(`.result__replay`);
+    resultReplayElement.addEventListener(`click`, (evt) => this.onReplay(evt.target));
   }
+
+  onReplay() {}
 }

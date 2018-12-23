@@ -10,12 +10,9 @@ export default class AbstractView {
       throw new Error(`Can't instantiate AbstractView, only concrete one`);
     }
   }
+
   get template() {
     throw new Error(`Template is required`);
-  }
-
-  render() {
-    return render(this.template);
   }
 
   get element() {
@@ -26,6 +23,11 @@ export default class AbstractView {
     this.bind(this._element);
     return this._element;
   }
+
+  render() {
+    return render(this.template);
+  }
+
 
   bind() {
     // bind handlers if required
