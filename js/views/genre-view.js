@@ -20,7 +20,7 @@ export default class GenreView extends AbstractView {
                     <audio src="${answer.src}"></audio>
                   </div>
                   <div ${Constants.DEBUG && answer.genre === this._data.genre ? Constants.DEBUG_STYLE : ``} class="game__answer">
-                    <input class="game__input visually-hidden" value="${answer.name}" type="checkbox" name="answer" id="answer-${idx + 1}">
+                    <input class="game__input visually-hidden" value="${answer.genre}" type="checkbox" name="answer" id="answer-${idx + 1}">
                     <label for="answer-${idx + 1}" class="game__check">Отметить</label>
                   </div>
                 </div>`)}
@@ -50,8 +50,8 @@ export default class GenreView extends AbstractView {
     formElement.addEventListener(`submit`, (evt) => {
       evt.preventDefault();
       const wrapperElement = evt.target;
-      const answersCheckedElements = Array.from(wrapperElement.querySelectorAll(`input[type=checkbox]`));
-      return this.onAnswer(answersCheckedElements);
+      const answersCheckedElements = Array.from(wrapperElement.querySelectorAll(`input[type="checkbox"]`));
+      return this.onAnswer(answersCheckedElements.map((answer) => answer.checked));
     });
   }
 

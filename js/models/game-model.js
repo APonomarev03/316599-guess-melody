@@ -54,18 +54,27 @@ export default class GameModel {
     });
   }
 
-  addCorrectAnswer() {
+  _addCorrectAnswer() {
     this._state.answers = [...this._state.answers, {currentAnswer: true, time: currentTime - this._state.time}];
     this._replaceCurrentTime();
   }
 
-  addInvalidAnswer() {
+  _addInvalidAnswer() {
     this._state.answers = [...this._state.answers, {currentAnswer: false, time: -1}];
     this._replaceCurrentTime();
   }
 
-  reduceLives() {
+  _reduceLives() {
     this._state.notes -= 1;
+  }
+
+  manageResults(playerAnswer, questionAnswer) {
+    if (JSON.stringify(playerAnswer) !== JSON.stringify(questionAnswer)) {
+      this._addInvalidAnswer();
+      this._reduceLives();
+    } else {
+      this._addCorrectAnswer();
+    }
   }
 
   updateStatistics() {
