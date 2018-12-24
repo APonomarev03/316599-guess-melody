@@ -23,16 +23,8 @@ export default class GamePresenter {
     this._timer = null;
   }
 
-  get model() {
-    return this._model;
-  }
-
   get currentTypeLevel() {
     return this._model.isArtistQuestion ? new ArtistView(this._model.currentQuestion) : new GenreView(this._model.currentQuestion);
-  }
-
-  get element() {
-    return this._root;
   }
 
   startTimer() {

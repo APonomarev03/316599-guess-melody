@@ -1,8 +1,8 @@
 import {Constants} from "./constants";
 
 export const countScorePlayer = (answers) => {
-  const isMistake = answers.filter((answer) => answer.currentAnswer === false).length;
-  const isSlow = (answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER;
+  const mistakesCount = answers.filter((answer) => answer.currentAnswer === false).length;
+  const isSlow = (answer) => answer.currentAnswer && answer.time >= Constants.FAST_ANSWER;
   const isFast = (answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER;
 
   const totalTime = answers.reduce((total, answer) => {
@@ -10,20 +10,19 @@ export const countScorePlayer = (answers) => {
     return total;
   }, 0);
 
-  if (isMistake > 3 || totalTime > 300) {
+  if (mistakesCount > 3 || totalTime > 300) {
     return -1;
   }
 
   return answers.reduce((total, answer) => {
     if (isFast(answer)) {
       total += 2;
-      return total;
     } else if (isSlow(answer)) {
       total += 1;
-      return total;
+    } else {
+      total -= 2;
     }
 
-    total -= 2;
     return total;
   }, 0);
 };
