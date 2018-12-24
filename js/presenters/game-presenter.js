@@ -124,8 +124,8 @@ export default class GamePresenter {
       }
 
       if (this._model.winGame) {
-        this.model.updateStatistics();
-        Application.showStats(this.model.state);
+        this._model.updateStatistics();
+        Application.showStats(this._model.state);
       } else if (this._model.failTries) {
         Application.showFailTries();
       } else if (this._model.failTime) {
