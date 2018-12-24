@@ -24,6 +24,7 @@ const pauseActiveTrack = (audio) => {
 };
 
 export const toggleTrack = (track) => {
+  console.log(track);
   const trackBtnElement = track;
   const audioElement = trackBtnElement.parentElement.querySelector(`audio`);
 

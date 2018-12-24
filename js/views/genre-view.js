@@ -38,7 +38,7 @@ export default class GenreView extends AbstractView {
     const answersElements = this.element.querySelectorAll(`.game__answer input`);
 
     trackElements.forEach((button) => {
-      button.addEventListener(`click`, (evt) => this.onButtonClick(evt));
+      button.addEventListener(`click`, (evt) => this.onButtonClick(evt.target));
     });
 
     formElement.addEventListener(`change`, () => {
