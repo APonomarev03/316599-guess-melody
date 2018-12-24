@@ -38,7 +38,7 @@ export default class ArtistView extends AbstractView {
       const clickedElement = evt.target;
       const wrapperElement = clickedElement.closest(`.artist`);
       const answerElement = wrapperElement.querySelector(`input`);
-      return this.onAnswer(answerElement);
+      return this.onAnswer(answerElement.value);
     });
   }
 

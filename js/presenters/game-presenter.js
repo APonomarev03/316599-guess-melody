@@ -19,7 +19,7 @@ export default class GamePresenter {
     this._root.appendChild(this._header.element);
     this._root.appendChild(this._level.element);
     this._root.appendChild(new FooterView().element);
-    this.bind();
+    this._bind();
     this._timer = null;
   }
 
@@ -27,34 +27,34 @@ export default class GamePresenter {
     return this._model.isArtistQuestion ? new ArtistView(this._model.currentQuestion) : new GenreView(this._model.currentQuestion);
   }
 
-  startTimer() {
+  _startTimer() {
     if (this._model.failTime) {
       Application.showFailTime();
     } else {
       this._timer = setTimeout(() => {
         this._model.tick();
-        this.startTimer();
-        this.updateHeader();
+        this._startTimer();
+        this._updateHeader();
       }, Constants.ONE_SECOND);
     }
   }
 
-  stopTimer() {
+  _stopTimer() {
     clearTimeout(this._timer);
   }
 
   startGame() {
     this._model.restart();
     changeView(this._root);
-    this.startTimer();
+    this._startTimer();
   }
 
-  continueGame() {
+  _continueGame() {
     changeView(this._root);
-    this.startTimer();
+    this._startTimer();
   }
 
-  updateHeader() {
+  _updateHeader() {
     const header = new HeaderView(this._model.state);
     header.onClick = (evt) => {
       evt.preventDefault();
@@ -64,26 +64,26 @@ export default class GamePresenter {
     this._header = header;
   }
 
-  changeLevel() {
+  _changeLevel() {
     if (this._model.failTries) {
       this._model.restart();
       Application.showFailTries();
     } else {
       this._model.changeLevel();
-      this.updateHeader();
+      this._updateHeader();
       const level = this.currentTypeLevel;
-      this.changeContentView(level);
-      this.bind();
-      this.continueGame();
+      this._changeContentView(level);
+      this._bind();
+      this._continueGame();
     }
   }
 
-  changeContentView(view) {
+  _changeContentView(view) {
     this._root.replaceChild(view.element, this._level.element);
     this._level = view;
   }
 
-  bind() {
+  _bind() {
     enableFirstTrack(this._level);
 
     this._level.onButtonClick = (track) => {
@@ -91,28 +91,15 @@ export default class GamePresenter {
     };
 
     this._level.onAnswer = (data) => {
-      this.stopTimer();
+      this._stopTimer();
 
       if (this._model.isArtistQuestion) {
         const successAnswerElement = this._model.currentQuestion.answers.find((answer) => answer.isCorrect);
-        if (data.value === successAnswerElement.title) {
-          this._model.addCorrectAnswer();
-        } else {
-          this._model.addInvalidAnswer();
-          this._model.reduceLives();
-        }
+        this._model.manageResults(data, successAnswerElement.title);
       } else if (!this._model.isArtistQuestion) {
-        const correctAnswersElements = this._model.currentQuestion.answers.filter((answer) => answer);
-        const playersAnswersFilteredElements = data.map((answer) => !!answer.checked);
-        const correctAnswersFilteredElements = correctAnswersElements.map((answer) => answer.genre === this._model.currentQuestion.genre);
-        const isCorrectAnswerElement = playersAnswersFilteredElements.join() === correctAnswersFilteredElements.join();
-
-        if (!isCorrectAnswerElement) {
-          this._model.addInvalidAnswer();
-          this._model.reduceLives();
-        } else {
-          this._model.addCorrectAnswer();
-        }
+        const correctGenre = this._model.currentQuestion.genre;
+        const correctAnswersElements = this._model.currentQuestion.answers.map((answer) => answer.genre === correctGenre);
+        this._model.manageResults(data, correctAnswersElements);
       }
 
       if (this._model.winGame) {
@@ -123,7 +110,7 @@ export default class GamePresenter {
       } else if (this._model.failTime) {
         Application.showFailTime();
       } else {
-        this.changeLevel();
+        this._changeLevel();
       }
     };
   }
