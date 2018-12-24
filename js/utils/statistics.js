@@ -1,17 +1,31 @@
 import {Constants} from "./constants";
 
 export const countScorePlayer = (answers) => {
-  const slowCount = answers.filter((answer) => answer.currentAnswer && answer.time >= Constants.FAST_ANSWER).length;
-  const fastCount = answers.filter((answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER).length;
-  const mistakesCount = answers.filter((answer) => answer.currentAnswer === false).length;
-  let totalTime = 0;
-  answers.forEach((answer) => {
-    totalTime += answer.time;
-  });
-  if (mistakesCount > 3 || totalTime > 300) {
+  const isMistake = answers.filter((answer) => answer.currentAnswer === false).length;
+  const isSlow = (answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER;
+  const isFast = (answer) => answer.currentAnswer && answer.time < Constants.FAST_ANSWER;
+
+  const totalTime = answers.reduce((total, answer) => {
+    total += answer.time;
+    return total;
+  }, 0);
+
+  if (isMistake > 3 || totalTime > 300) {
     return -1;
   }
-  return slowCount + fastCount * 2 - mistakesCount * 2;
+
+  return answers.reduce((total, answer) => {
+    if (isFast(answer)) {
+      total += 2;
+      return total;
+    } else if (isSlow(answer)) {
+      total += 1;
+      return total;
+    }
+
+    total -= 2;
+    return total;
+  }, 0);
 };
 
 export const showPlayerResult = (statistics, results) => {
