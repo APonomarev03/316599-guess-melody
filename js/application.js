@@ -48,7 +48,7 @@ export default class Application {
   static showStats(state) {
     Loader.loadResults().
       then((data) => {
-        const serverStatistics = data[data.length - 1].answers.slice(0, 10);
+        const serverStatistics = data[data.length - 1].answers;
         const results = showPlayerResult(serverStatistics, state);
         const filteredStatistics = {
           answers: manageNewStatistics(serverStatistics, state.scores)

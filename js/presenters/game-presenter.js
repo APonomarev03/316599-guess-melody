@@ -96,7 +96,7 @@ export default class GamePresenter {
       if (this._model.isArtistQuestion) {
         const successAnswerElement = this._model.currentQuestion.answers.find((answer) => answer.isCorrect);
         this._model.manageResults(data, successAnswerElement.title);
-      } else if (!this._model.isArtistQuestion) {
+      } else {
         const correctGenre = this._model.currentQuestion.genre;
         const correctAnswersElements = this._model.currentQuestion.answers.map((answer) => answer.genre === correctGenre);
         this._model.manageResults(data, correctAnswersElements);
