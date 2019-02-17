@@ -11,8 +11,8 @@ const checkStatus = (response) => {
 const toJSON = (res) => res.json();
 
 export default class Loader {
-  static async loadQuestions() {
-    return await fetch(`${SERVER_URL}/questions`).then(checkStatus).then(toJSON);
+  static loadQuestions() {
+    return fetch(`${SERVER_URL}/questions`).then(checkStatus).then(toJSON);
   }
 
   static loadResults() {

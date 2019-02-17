@@ -15,16 +15,20 @@ let questions;
 export default class Application {
 
   static startGame() {
+    Application.loadGame()
+      .catch(Application.showWelcome);
+  }
+
+  static async loadGame() {
     const splash = new SplashView();
     changeView(splash.element);
     splash.start();
-    Loader.loadQuestions().
-      then((data) => {
-        questions = data;
-      }).
-      then(() => Application.showWelcome()).
-      catch(Application.showError).
-      then(() => splash.stop());
+    try {
+      questions = await Loader.loadQuestions();
+      Application.showWelcome();
+    } finally {
+      splash.stop();
+    }
   }
 
   static showWelcome() {
@@ -45,19 +49,20 @@ export default class Application {
     changeView(new FailTimePresenter().element);
   }
 
-  static showStats(state) {
-    Loader.loadResults().
-      then((data) => {
-        const serverStatistics = data[data.length - 1].answers;
-        const results = showPlayerResult(serverStatistics, state);
-        const filteredStatistics = {
-          answers: manageNewStatistics(serverStatistics, state.scores)
-        };
-        Loader.saveResults(filteredStatistics);
-        const statistics = new ResultPresenter(state, results);
-        changeView(statistics.element);
-      }).
-      catch(Application.showError);
+  static async showStats(state) {
+    try {
+      const loadResults = await Loader.loadResults();
+      const serverStatistics = loadResults[loadResults.length - 1].answers;
+      const results = showPlayerResult(serverStatistics, state);
+      const filteredStatistics = {
+        answers: manageNewStatistics(serverStatistics, state.scores)
+      };
+      await Loader.saveResults(filteredStatistics);
+      const statistics = new ResultPresenter(state, results);
+      changeView(statistics.element);
+    } catch (e) {
+      this.showError(e);
+    }
   }
 
   static showError(error) {
